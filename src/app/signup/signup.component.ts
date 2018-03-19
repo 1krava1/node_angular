@@ -22,7 +22,7 @@ export class SignUpComponent implements OnInit {
     this.registrationForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required, Validators.email])],
       password: ['', Validators.required],
-      repeatPassword: ['', Validators.required],
+      login: ['', Validators.required],
     });
   }
 
@@ -42,23 +42,23 @@ export class SignUpComponent implements OnInit {
     return res;
   }
 
-  isRepeatPasswordValid(): boolean {
+  isLoginValid(): boolean {
     let res = true;
-    if ( this.registrationForm.get('repeatPassword').touched ) {
-      res = this.registrationForm.controls.repeatPassword.valid &&
-            this.registrationForm.controls.repeatPassword.value === this.registrationForm.controls.password.value;
+    if ( this.registrationForm.get('login').touched ) {
+      res = this.registrationForm.controls.login.valid;
     }
     return res;
   }
 
   isFormValid(): boolean {
-    return this.isEmailValid() && this.isPasswordValid() && this.isRepeatPasswordValid() && this.registrationForm.valid;
+    return this.isEmailValid() && this.isPasswordValid() && this.isLoginValid() && this.registrationForm.valid;
   }
 
   doSignUp(): void {
     const data = {
       email: this.registrationForm.get('email').value,
       password: this.registrationForm.get('password').value,
+      login: this.registrationForm.get('login').value,
     };
     this.userService.signUp(data).subscribe( (response) => {
       console.log(response);

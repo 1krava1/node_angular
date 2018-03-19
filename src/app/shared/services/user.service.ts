@@ -12,7 +12,7 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   signUp(data) {
-    return this.http.post( this.backendUrl + '/users/signup', JSON.stringify(data) );
+    return this.http.post( this.backendUrl + '/signup', JSON.stringify(data) );
   }
 
   signIn(data) {
