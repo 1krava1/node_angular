@@ -1,0 +1,43 @@
+<section id="signup-main">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-6">
+        <h1 class="text-center">Sign Up</h1>
+        <form [formGroup]="registrationForm" (submit)="doSignUp()" class="col justify-content-center">
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email"
+                   class="form-control"
+                   [class.is-invalid]="!isEmailValid()"
+                   id="email"
+                   formControlName="email"
+                   aria-describedby="emailHelp"
+                   placeholder="Enter email">
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password"
+                   class="form-control"
+                   [class.is-invalid]="!isPasswordValid()"
+                   id="password"
+                   placeholder="Password"
+                   formControlName="password">
+          </div>
+          <div class="form-group">
+            <label for="repeatPassword">Repeat password</label>
+            <input type="password"
+                   class="form-control"
+                   [class.is-invalid]="!isRepeatPasswordValid()"
+                   id="repeatPassword"
+                   placeholder="Repeat password"
+                   formControlName="repeatPassword">
+          </div>
+          <button type="submit"
+                  [disabled]="!isFormValid()"
+                  class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
