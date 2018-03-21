@@ -2,42 +2,8 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-6">
-        <h1 class="text-center">Sign Up</h1>
-        <form [formGroup]="registrationForm" (submit)="doSignUp()" class="col justify-content-center">
-          <div class="form-group">
-            <label for="login">Login</label>
-            <input type="text"
-                   class="form-control"
-                   [class.is-invalid]="!isLoginValid()"
-                   id="login"
-                   placeholder="Login"
-                   formControlName="login">
-          </div>
-          <div class="form-group">
-            <label for="email">Email address</label>
-            <input type="email"
-                   class="form-control"
-                   [class.is-invalid]="!isEmailValid()"
-                   id="email"
-                   formControlName="email"
-                   aria-describedby="emailHelp"
-                   placeholder="Enter email">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password"
-                   class="form-control"
-                   [class.is-invalid]="!isPasswordValid()"
-                   id="password"
-                   placeholder="Password"
-                   formControlName="password">
-          </div>
-          <button type="submit"
-                  [disabled]="!isFormValid()"
-                  class="btn btn-primary">Submit</button>
-          <a href="https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0&openid.mode=checkid_setup&openid.return_to=http://localhost:3000/signup/auth/&openid.realm=http://localhost:3000&openid.ns.sreg=http://openid.net/extensions/sreg/1.1&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.identity=http://specs.openid.net/auth/2.0/identifier_select">Steam</a>
-        </form>
+        <h1 class="text-center">Authentication...</h1>
+        <p>({{token}})</p>
       </div>
     </div>
   </div>

@@ -1,0 +1,43 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-lg-2">
+      <div *ngIf="!!currentItem" class="card mb-4">
+          <img class="card-img-top" src="{{currentItem.image}}" alt="{{currentItem.name}}">
+          <div class="card-body">
+            <h5 class="card-title">{{currentItem.marketHashName}}</h5>
+            <p class="card-text">
+              category: {{currentItem.category}}<br/>
+              exterior: {{currentItem.exterior}}<br/>
+              marketable: {{currentItem.marketable}}<br/>
+              tradable: {{currentItem.tradable}}<br/>
+              type: {{currentItem.type}}<br/>
+            </p>
+            <button class="btn btn-primary"
+                    [class.btn-primary]="!isItemSelected(currentItem)"
+                    [class.btn-danger]="isItemSelected(currentItem)"
+                    (click)="toggleItemInTrade(currentItem)">Toggle item in trade</button>
+          </div>
+        </div>
+        <div class="row">
+          <div *ngFor="let item of selectedItems"
+               class="col-6">
+            <div class="card">
+              <img class="card-img-top" src="{{item.image}}" alt="{{item.name}}">
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-7">
+      <div class="row">
+        <div class="col-3" *ngFor="let item of inventory">
+          <button class="card"
+                  id="{{item.id}}"
+                  (click)=selectItem(item)>
+            <img class="card-img-top" src="{{item.image}}" alt="{{item.name}}">
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-3">payment</div>
+  </div>
+</div>

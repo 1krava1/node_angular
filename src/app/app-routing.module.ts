@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { SignUpComponent } from './signup/signup.component';
 import { MainComponent } from './main/main.component';
+import { InventoryComponent } from './inventory/inventory.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,14 @@ const routes: Routes = [
     path: 'signup',
     component: SignUpComponent,
   },
+  {
+    path: 'signup/:token',
+    component: SignUpComponent,
+  },
+  {
+    path: 'inventory',
+    component: InventoryComponent,
+  }
 ];
 
 @NgModule({

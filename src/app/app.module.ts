@@ -10,9 +10,16 @@ import { SignUpComponent } from './signup/signup.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { MainComponent } from './main/main.component';
+import { InventoryComponent } from './inventory/inventory.component';
 
+import { InventoryService } from './shared/services/inventory.service';
 import { UserService } from './shared/services/user.service';
 import { HttpClientModule } from '@angular/common/http';
+import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+
+export function tG() {
+  return localStorage.getItem('jwt');
+}
 
 @NgModule({
   declarations: [
@@ -21,17 +28,26 @@ import { HttpClientModule } from '@angular/common/http';
     HeaderComponent,
     FooterComponent,
     MainComponent,
+    InventoryComponent,
   ],
   imports: [
     HttpClientModule,
     ReactiveFormsModule,
     AppRoutingModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tG
+      }
+    }),
     NgbModule.forRoot(),
     BrowserModule.withServerTransition({ appId: 'science' })
   ],
   providers: [
     FormBuilder,
     UserService,
+    InventoryService,
+    JwtModule,
+    JwtHelperService,
   ],
   bootstrap: [AppComponent]
 })
