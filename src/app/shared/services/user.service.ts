@@ -29,11 +29,16 @@ export class UserService {
     }
   }
   getUserToken(){
-    if ( !!localStorage ) return localStorage.getItem('jwt') || false;
+    if ( !!localStorage ) return localStorage.getItem('jwt');
+  }
+  isLoggedIn(){
+    return !!localStorage && !!localStorage.getItem('jwt');
   }
 
   getUser(){
-    return this.getUserToken() ? this.jwtHelperService.decodeToken(this.getUserToken()).data._doc : false;
+    if ( this.isLoggedIn() ) {
+      return this.getUserToken() ? this.jwtHelperService.decodeToken(this.getUserToken()).data._doc : false;
+    }
   }
   setUser(){
     this.user.emit( this.getUser() );

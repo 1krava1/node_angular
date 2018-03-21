@@ -18,8 +18,6 @@ export class InventoryComponent implements OnInit {
     this.user = this.userService.getUser();
     this.inventoryService.getInventory(this.user.steamID).subscribe((inventory) => {
       this.inventory = inventory;
-      console.log(inventory);
-      
     });
     this.userService.user.subscribe((user) => {
       this.user = user;
