@@ -19,9 +19,13 @@ const routes: Routes = [
     component: SignUpComponent,
   },
   {
+    path: 'inventory/:game',
+    component: InventoryComponent,
+  },
+  {
     path: 'inventory',
     component: InventoryComponent,
-  }
+  },
 ];
 
 @NgModule({

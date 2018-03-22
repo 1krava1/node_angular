@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryService } from '../shared/services/inventory.service';
 import { UserService } from '../shared/services/user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-inventory',
@@ -12,12 +13,18 @@ export class InventoryComponent implements OnInit {
   user;
   currentItem;
   selectedItems = [];
+  currentPage = 'dota';
 
   constructor(private inventoryService: InventoryService,
-              private userService: UserService) {
+              private userService: UserService,
+              private activatedRoute: ActivatedRoute) {
     this.user = this.userService.getUser();
-    this.inventoryService.getInventory(this.user.steamID).subscribe((inventory) => {
-      this.inventory = inventory;
+    this.activatedRoute.params.subscribe((params) => {
+      const game = !!params.game ? params.game : 'dota';
+      this.currentPage = game;
+      this.inventoryService.getInventory(this.user.steamID, game).subscribe((inventory) => {
+        this.inventory = inventory;
+      });
     });
     this.userService.user.subscribe((user) => {
       this.user = user;
@@ -38,5 +45,9 @@ export class InventoryComponent implements OnInit {
     } else {
       this.selectedItems.push(item);
     }
+  }
+
+  isCurrentPage(page): boolean{
+    return this.currentPage === page;
   }
 }

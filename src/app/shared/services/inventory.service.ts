@@ -10,7 +10,7 @@ export class InventoryService {
 
   constructor(private http: HttpClient) {}
 
-  getInventory(steamid){
-    return this.http.get( environment.backend + '/inventory/' + steamid + '/570' );
+  getInventory(steamid, game){
+    return this.http.get( environment.backend + '/inventory/' + steamid + '/' + game );
   }
 }
