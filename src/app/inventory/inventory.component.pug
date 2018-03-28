@@ -1,0 +1,60 @@
+.container-fluid
+  .row
+    .container
+      .col-12
+        ul.nav.nav-pills.nav-justified.my-4
+          li.nav-item( '*ngFor'="let route of routes" )
+            a.nav-link(
+              '[class.active]'="isCurrentPage(route.link)"
+              '[routerLink]'="['/inventory/' + route.link]"
+            ) {{route.name}}
+  .row
+    .col-12.col-lg-2
+      .card.mb-4( '*ngIf'="!!currentItem" )
+        img.card-img-top(
+          '[src]'="currentItem.image"
+          '[alt]'="currentItem.name"
+        )
+        .card-body
+          h5.card-title('[innerHTML]'="currentItem.marketHashName")
+          p.card-text
+            | category: {{currentItem.category}}
+            br
+            | exterior: {{currentItem.exterior}}
+            br
+            | marketable: {{currentItem.marketable}}
+            br
+            | tradable: {{currentItem.tradable}}
+            br
+            | type: {{currentItem.type}}
+            br
+          button.btn.btn-primary(
+            '[class.btn-primary]'="!isItemSelected(currentItem)"
+            '[class.btn-danger]'="isItemSelected(currentItem)"
+            '(click)'="toggleItemInTrade(currentItem)"
+            '[innerHTML]'="isItemSelected(currentItem) ? 'Remove from trade' : 'Add to trade'"
+          )
+        .d-flex.flex-wrap
+          button.w-50.btn.btn-link.p-0(
+            '*ngFor'="let item of selectedItems"
+            '(click)'="selectItem(item)"
+          )
+            img.card-img-top(
+              '[src]'="item.image"
+              '[alt]'="item.name"
+            )
+    .col-12.col-lg-7
+      .d-flex.flex-wrap
+        div(
+          'style'="width: 12.5%;"
+          '*ngFor'="let item of inventory"
+        )
+          button.btn.btn-link.d-block.p-0.item(
+            '[class.selected]'="isItemSelected(item)"
+            '(click)'="selectItem(item)"
+          )
+            img.card-img-top.d-block(
+              '[src]'="item.image"
+              '[alt]'="item.name"
+            )
+    .col-12.col-lg-3 payment

@@ -14,6 +14,20 @@ export class InventoryComponent implements OnInit {
   currentItem;
   selectedItems = [];
   currentPage = 'dota';
+  routes = [
+    {
+      link: 'dota',
+      name: 'Dota',
+    },
+    {
+      link: 'csgo',
+      name: 'CS:GO',
+    },
+    {
+      link: 'pubg',
+      name: 'Pubg',
+    },
+  ];
 
   constructor(private inventoryService: InventoryService,
               private userService: UserService,
@@ -47,7 +61,7 @@ export class InventoryComponent implements OnInit {
     }
   }
 
-  isCurrentPage(page): boolean{
+  isCurrentPage(page): boolean {
     return this.currentPage === page;
   }
 }
