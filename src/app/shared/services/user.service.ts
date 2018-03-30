@@ -28,23 +28,23 @@ export class UserService {
       this.setUser();
     }
   }
-  getUserToken(){
+  getUserToken() {
     if ( !!localStorage ) return localStorage.getItem('jwt');
   }
-  isLoggedIn(){
+  isLoggedIn() {
     return !!localStorage && !!localStorage.getItem('jwt');
   }
 
-  getUser(){
+  getUser() {
     if ( this.isLoggedIn() ) {
       return this.getUserToken() ? this.jwtHelperService.decodeToken(this.getUserToken()).data._doc : false;
     }
   }
-  setUser(){
+  setUser() {
     this.user.emit( this.getUser() );
   }
-  getUserField(field){
-    this.getUser().steamid;
+  getUserField(field) {
+    return this.getUser().steamid;
   }
 
   logout(): void {

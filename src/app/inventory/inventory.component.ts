@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InventoryService } from '../shared/services/inventory.service';
 import { UserService } from '../shared/services/user.service';
 import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-inventory',
@@ -28,10 +29,12 @@ export class InventoryComponent implements OnInit {
       name: 'Pubg',
     },
   ];
+  sortingForm: FormGroup;
 
   constructor(private inventoryService: InventoryService,
               private userService: UserService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private formBuilder: FormBuilder) {
     this.user = this.userService.getUser();
     this.activatedRoute.params.subscribe((params) => {
       const game = !!params.game ? params.game : 'dota';
@@ -43,6 +46,7 @@ export class InventoryComponent implements OnInit {
     this.userService.user.subscribe((user) => {
       this.user = user;
     });
+    this.createSortingForm();
   }
 
   ngOnInit() {}
@@ -63,5 +67,35 @@ export class InventoryComponent implements OnInit {
 
   isCurrentPage(page): boolean {
     return this.currentPage === page;
+  }
+
+  createSortingForm(): void {
+    this.sortingForm = this.formBuilder.group({
+      search: ['', Validators],
+      type: ['', Validators],
+      sorting: ['default', Validators],
+      selectAll: [false, Validators],
+    });
+  }
+  filterInventory(): void {
+    this.inventory.sort(function (a, b) {
+      if ( this.sortingForm.get('sorting').value === 'price-asc' ) {
+        if (a['price'] > b['price']) { return 1; }
+        if (a['price'] < b['price']) { return -1; }
+        if (a.id > b.id) {
+            return 1;
+        } else {
+            return -1;
+        }
+      } else if ( this.sortingForm.get('sorting').value === 'price-desc' ) {
+        if (a['price'] < b['price']) { return 1; }
+        if (a['price'] > b['price']) { return -1; }
+        if (a.id > b.id) {
+            return 1;
+        } else {
+            return -1;
+        }
+      }
+    });
   }
 }
