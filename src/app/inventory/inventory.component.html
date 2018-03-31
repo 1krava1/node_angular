@@ -10,9 +10,9 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-12 col-lg-2">p</div>
-    <div class="col-12 col-lg-7">
-      <form class="form-row" [formGroup]="sortingForm">
+    <div class="col-12 col-lg-3">p</div>
+    <div class="col-12 col-lg-9">
+      <form class="form-row" [formGroup]="sortingForm" *ngIf="!!sortingForm">
         <div class="col-auto">
           <label class="mr-sm-2" for="search">Search</label>
           <input class="form-control mb-2 mr-sm-2" id="search" type="search" placeholder="search" formControlName="search" (keyup)="filterInventory()"/>
@@ -20,15 +20,14 @@
         <div class="col-auto">
           <label for="type">Type</label>
           <select class="form-control mb-2 mr-sm-2" id="type" formControlName="type" (change)="filterInventory()">
-            <option value="type">type</option>
-            <option value="type">type</option>
-            <option value="type">type</option>
+            <option value="all">All</option>
+            <option *ngFor="let type of types" value="{{type}}">{{ type }}</option>
           </select>
         </div>
         <div class="col-auto">
           <label for="sorting">Sorting</label>
-          <select class="form-control mb-2 mr-sm-2" id="sorting" formControlName="sorting" (change)="filterInventory()">
-            <option value="default">Default</option>
+          <select class="form-control mb-2 mr-sm-2" id="sorting" formControlName="sorting" (change)="sortInventory()">
+            <option value="n">Default</option>
             <option value="price-asc">Price (low to high)</option>
             <option value="price-desc">Price (high to low)</option>
             <option value="name-asc">Name (A to Z)</option>
@@ -37,27 +36,41 @@
         </div>
         <div class="col-auto">
           <label for="select-all">Select all</label>
-          <input id="select-all" type="checkbox" formControlName="selectAll" (change)="filterInventory()"/>
+          <input id="select-all" type="checkbox" formControlName="selectAll" (change)="selectAll()"/>
         </div>
       </form>
     </div>
   </div>
   <div class="row">
-    <div class="col-12 col-lg-2">
+    <div class="col-12 col-lg-3">
       <div class="card mb-4" *ngIf="!!currentItem"><img class="card-img-top" [src]="currentItem.image" [alt]="currentItem.name"/>
         <div class="card-body">
           <h5 class="card-title" [innerHTML]="currentItem.marketHashName"></h5>
-          <p class="card-text">category: {{currentItem.category}}<br/>exterior: {{currentItem.exterior}}<br/>marketable: {{currentItem.marketable}}<br/>tradable: {{currentItem.tradable}}<br/>type: {{currentItem.type}}<br/>price: {{currentItem.price / 100 | currency: 'USD'}}</p>
+          <div class="card-text">
+            <div class="row mb-1">
+              <div class="col-12 col-sm-6">category: {{currentItem.category}}</div>
+              <div class="col-12 col-sm-6">marketable: {{currentItem.marketable}}</div>
+            </div>
+            <div class="row mb-1">
+              <div class="col-12 col-sm-6">tradable: {{currentItem.tradable}}</div>
+              <div class="col-12 col-sm-6">type: {{currentItem.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim()}}</div>
+            </div>
+            <div class="row mb-1">
+              <div class="col-12 col-sm-6">price: {{currentItem.price / 100 | currency: 'USD'}}</div>
+            </div>
+          </div>
           <button class="btn btn-primary" [class.btn-primary]="!isItemSelected(currentItem)" [class.btn-danger]="isItemSelected(currentItem)" (click)="toggleItemInTrade(currentItem)" [innerHTML]="isItemSelected(currentItem) ? 'Remove from trade' : 'Add to trade'"></button>
         </div>
+      </div>
+      <div class="card mb-4" *ngIf="!!selectedItems.length">
         <div class="d-flex flex-wrap">
           <button class="w-50 btn btn-link p-0" *ngFor="let item of selectedItems" (click)="selectItem(item)"><img class="card-img-top" [src]="item.image" [alt]="item.name"/></button>
         </div>
       </div>
     </div>
-    <div class="col-12 col-lg-7">
+    <div class="col-12 col-lg-6">
       <div class="d-flex flex-wrap">
-        <div style="width: 14.2857%;" *ngFor="let item of inventory">
+        <div style="width: 14.2857%;" *ngFor="let item of inventory.filtered">
           <button class="btn btn-link d-block p-0 item" [class.selected]="isItemSelected(item)" (click)="selectItem(item)"><img class="card-img-top d-block" [src]="item.image" [alt]="item.name"/>
             <div class="hover-content">
               <h6 class="mb-0 small">{{item.name}}</h6>

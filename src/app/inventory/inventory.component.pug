@@ -9,9 +9,9 @@
               '[routerLink]'="['/inventory/' + route.link]"
             ) {{route.name}}
   .row
-    .col-12.col-lg-2 p
-    .col-12.col-lg-7
-      form.form-row('[formGroup]'="sortingForm")
+    .col-12.col-lg-3 p
+    .col-12.col-lg-9
+      form.form-row('[formGroup]'="sortingForm" '*ngIf'="!!sortingForm")
         .col-auto
           label.mr-sm-2('for'="search") Search
           input.form-control.mb-2.mr-sm-2#search(
@@ -24,14 +24,13 @@
         .col-auto
           label('for'="type") Type
           select.form-control.mb-2.mr-sm-2#type('formControlName'="type" '(change)'="filterInventory()")
-            option('value'="type") type
-            option('value'="type") type
-            option('value'="type") type
+            option('value'="all") All
+            option('*ngFor'="let type of types" 'value'="{{type}}") {{ type }}
 
         .col-auto
           label('for'="sorting") Sorting
-          select.form-control.mb-2.mr-sm-2#sorting('formControlName'="sorting" '(change)'="filterInventory()")
-            option('value'="default") Default
+          select.form-control.mb-2.mr-sm-2#sorting('formControlName'="sorting" '(change)'="sortInventory()")
+            option('value'="n") Default
             option('value'="price-asc") Price (low to high)
             option('value'="price-desc") Price (high to low)
             option('value'="name-asc") Name (A to Z)
@@ -39,9 +38,9 @@
 
         .col-auto
           label('for'="select-all") Select all
-          input#select-all('type'="checkbox" 'formControlName'="selectAll" '(change)'="filterInventory()")
+          input#select-all('type'="checkbox" 'formControlName'="selectAll" '(change)'="selectAll()")
   .row
-    .col-12.col-lg-2
+    .col-12.col-lg-3
       .card.mb-4( '*ngIf'="!!currentItem" )
         img.card-img-top(
           '[src]'="currentItem.image"
@@ -49,24 +48,22 @@
         )
         .card-body
           h5.card-title('[innerHTML]'="currentItem.marketHashName")
-          p.card-text
-            | category: {{currentItem.category}}
-            br
-            | exterior: {{currentItem.exterior}}
-            br
-            | marketable: {{currentItem.marketable}}
-            br
-            | tradable: {{currentItem.tradable}}
-            br
-            | type: {{currentItem.type}}
-            br
-            | price: {{currentItem.price / 100 | currency: 'USD'}}
+          .card-text
+            .row.mb-1
+              .col-12.col-sm-6 category: {{currentItem.category}}
+              .col-12.col-sm-6 marketable: {{currentItem.marketable}}
+            .row.mb-1
+              .col-12.col-sm-6 tradable: {{currentItem.tradable}}
+              .col-12.col-sm-6 type: {{currentItem.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim()}}
+            .row.mb-1
+              .col-12.col-sm-6 price: {{currentItem.price / 100 | currency: 'USD'}}
           button.btn.btn-primary(
             '[class.btn-primary]'="!isItemSelected(currentItem)"
             '[class.btn-danger]'="isItemSelected(currentItem)"
             '(click)'="toggleItemInTrade(currentItem)"
             '[innerHTML]'="isItemSelected(currentItem) ? 'Remove from trade' : 'Add to trade'"
           )
+      .card.mb-4( '*ngIf'="!!selectedItems.length" )
         .d-flex.flex-wrap
           button.w-50.btn.btn-link.p-0(
             '*ngFor'="let item of selectedItems"
@@ -76,11 +73,11 @@
               '[src]'="item.image"
               '[alt]'="item.name"
             )
-    .col-12.col-lg-7
+    .col-12.col-lg-6
       .d-flex.flex-wrap
         div(
           'style'="width: 14.2857%;"
-          '*ngFor'="let item of inventory"
+          '*ngFor'="let item of inventory.filtered"
         )
           button.btn.btn-link.d-block.p-0.item(
             '[class.selected]'="isItemSelected(item)"

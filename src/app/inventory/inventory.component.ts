@@ -10,10 +10,14 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
   styleUrls: ['./inventory.component.scss']
 })
 export class InventoryComponent implements OnInit {
-  inventory;
+  inventory = {
+    full: [],
+    filtered: [],
+  };
   user;
   currentItem;
   selectedItems = [];
+  types = [];
   currentPage = 'dota';
   routes = [
     {
@@ -40,7 +44,15 @@ export class InventoryComponent implements OnInit {
       const game = !!params.game ? params.game : 'dota';
       this.currentPage = game;
       this.inventoryService.getInventory(this.user.steamID, game).subscribe((inventory) => {
-        this.inventory = inventory;
+        this.inventory.full = Object.values(inventory);
+        this.inventory.filtered = Object.values(inventory);
+        this.types = [];
+        this.inventory.full.forEach(item => {
+          const type = item.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim();
+          if ( this.types.indexOf(type) === -1 ) {
+            this.types.push(type);
+          }
+        });
       });
     });
     this.userService.user.subscribe((user) => {
@@ -72,30 +84,52 @@ export class InventoryComponent implements OnInit {
   createSortingForm(): void {
     this.sortingForm = this.formBuilder.group({
       search: ['', Validators],
-      type: ['', Validators],
-      sorting: ['default', Validators],
+      type: ['all', Validators],
+      sorting: ['n', Validators],
       selectAll: [false, Validators],
     });
   }
   filterInventory(): void {
-    this.inventory.sort(function (a, b) {
-      if ( this.sortingForm.get('sorting').value === 'price-asc' ) {
-        if (a['price'] > b['price']) { return 1; }
-        if (a['price'] < b['price']) { return -1; }
-        if (a.id > b.id) {
+    this.inventory.filtered = this.inventory.full.filter((item, index, array) => {
+      const search = this.sortingForm.get('search').value.toLowerCase().trim();
+      const type = item.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim();
+      return (this.sortingForm.get('type').value === 'all' || this.sortingForm.get('type').value === type) &&
+             (this.sortingForm.get('search').value.length === 0 || item.name.toLowerCase().includes(search) );
+    });
+    this.sortInventory();
+  }
+  sortInventory(): void {
+    const sorting = {
+      key: this.sortingForm.get('sorting').value.split('-')[0],
+      direction: this.sortingForm.get('sorting').value.split('-')[1],
+    };
+    this.inventory.filtered.sort((a, b) => {
+      a[sorting.key] = !isNaN(a[sorting.key]) ? parseFloat(a[sorting.key]) : a[sorting.key];
+      b[sorting.key] = !isNaN(b[sorting.key]) ? parseFloat(b[sorting.key]) : b[sorting.key];
+      if ( sorting.direction === 'desc' ) {
+        if (a[sorting.key] < b[sorting.key]) { return 1; }
+        if (a[sorting.key] > b[sorting.key]) { return -1; }
+        if (a.n > b.n) {
             return 1;
         } else {
             return -1;
         }
-      } else if ( this.sortingForm.get('sorting').value === 'price-desc' ) {
-        if (a['price'] < b['price']) { return 1; }
-        if (a['price'] > b['price']) { return -1; }
-        if (a.id > b.id) {
+      } else {
+        if (a[sorting.key] > b[sorting.key]) { return 1; }
+        if (a[sorting.key] < b[sorting.key]) { return -1; }
+        if (a.n > b.n) {
             return 1;
         } else {
             return -1;
         }
       }
     });
+  }
+  selectAll(): void {
+    if ( this.selectedItems === this.inventory.filtered ) {
+      this.selectedItems = [];
+    } else {
+      this.selectedItems = this.inventory.filtered;
+    }
   }
 }
