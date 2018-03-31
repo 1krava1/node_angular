@@ -3,6 +3,7 @@ import { InventoryService } from '../shared/services/inventory.service';
 import { UserService } from '../shared/services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-inventory',
@@ -13,6 +14,12 @@ export class InventoryComponent implements OnInit {
   inventory = {
     full: [],
     filtered: [],
+    emptySlots: [],
+    pages: {
+      current: 1,
+      total: 1,
+      itemsPerPage: 36,
+    },
   };
   user;
   currentItem;
@@ -38,7 +45,8 @@ export class InventoryComponent implements OnInit {
   constructor(private inventoryService: InventoryService,
               private userService: UserService,
               private activatedRoute: ActivatedRoute,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private sanitization: DomSanitizer) {
     this.user = this.userService.getUser();
     this.activatedRoute.params.subscribe((params) => {
       const game = !!params.game ? params.game : 'dota';
@@ -46,6 +54,9 @@ export class InventoryComponent implements OnInit {
       this.inventoryService.getInventory(this.user.steamID, game).subscribe((inventory) => {
         this.inventory.full = Object.values(inventory);
         this.inventory.filtered = Object.values(inventory);
+        this.inventory.pages.current = 1;
+        this.inventory.pages.total = Math.ceil(Object.values(inventory).length / this.inventory.pages.itemsPerPage);
+        this.selectedItems = [];
         this.types = [];
         this.inventory.full.forEach(item => {
           const type = item.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim();
@@ -63,7 +74,14 @@ export class InventoryComponent implements OnInit {
 
   ngOnInit() {}
 
-  selectItem(item) {
+  sanitizeStyle(url) {
+    return this.sanitization.bypassSecurityTrustStyle(`url(${url})`);
+  }
+  isCurrentPage(page): boolean {
+    return this.currentPage === page;
+  }
+
+  selectItem(item): void {
     this.currentItem = item;
   }
   isItemSelected(item) {
@@ -75,10 +93,6 @@ export class InventoryComponent implements OnInit {
     } else {
       this.selectedItems.push(item);
     }
-  }
-
-  isCurrentPage(page): boolean {
-    return this.currentPage === page;
   }
 
   createSortingForm(): void {
@@ -103,6 +117,8 @@ export class InventoryComponent implements OnInit {
       key: this.sortingForm.get('sorting').value.split('-')[0],
       direction: this.sortingForm.get('sorting').value.split('-')[1],
     };
+    this.inventory.pages.current = 1;
+    this.inventory.pages.total = Math.ceil(this.inventory.filtered.length / this.inventory.pages.itemsPerPage);
     this.inventory.filtered.sort((a, b) => {
       a[sorting.key] = !isNaN(a[sorting.key]) ? parseFloat(a[sorting.key]) : a[sorting.key];
       b[sorting.key] = !isNaN(b[sorting.key]) ? parseFloat(b[sorting.key]) : b[sorting.key];
@@ -126,10 +142,36 @@ export class InventoryComponent implements OnInit {
     });
   }
   selectAll(): void {
-    if ( this.selectedItems === this.inventory.filtered ) {
+    if ( this.selectedItems.length === this.inventory.filtered.length ) {
+      this.sortingForm.get('selectAll').setValue(false);
       this.selectedItems = [];
     } else {
-      this.selectedItems = this.inventory.filtered;
+      this.sortingForm.get('selectAll').setValue(true);
+      this.selectedItems = [].concat(this.inventory.filtered);
     }
+  }
+
+  nextPage(): void {
+    const es = this.inventory.pages.itemsPerPage - (this.inventory.filtered.length % this.inventory.pages.itemsPerPage);
+    this.inventory.emptySlots = this.inventory.pages.current >= this.inventory.pages.total - 1
+                                ? new Array(es)
+                                : [];
+    this.inventory.pages.current = this.inventory.pages.current !== this.inventory.pages.total
+                                   ? this.inventory.pages.current + 1
+                                   : this.inventory.pages.total;
+  }
+  prevPage(): void {
+    this.inventory.emptySlots = [];
+    this.inventory.pages.current = this.inventory.pages.current !== 1
+                                   ? this.inventory.pages.current - 1
+                                   : 1;
+  }
+
+  totalCash(): number {
+    let total = 0;
+    this.selectedItems.map( (item) => {
+      total += parseFloat(item.price);
+    });
+    return total / 100;
   }
 }

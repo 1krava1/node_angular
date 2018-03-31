@@ -7,7 +7,7 @@
             a.nav-link(
               '[class.active]'="isCurrentPage(route.link)"
               '[routerLink]'="['/inventory/' + route.link]"
-            ) {{route.name}}
+            ) {{route.name | uppercase}}
   .row
     .col-12.col-lg-3 p
     .col-12.col-lg-9
@@ -24,8 +24,8 @@
         .col-auto
           label('for'="type") Type
           select.form-control.mb-2.mr-sm-2#type('formControlName'="type" '(change)'="filterInventory()")
-            option('value'="all") All
-            option('*ngFor'="let type of types" 'value'="{{type}}") {{ type }}
+            option('value'="all") ALL
+            option('*ngFor'="let type of types" 'value'="{{type}}") {{ type | uppercase }}
 
         .col-auto
           label('for'="sorting") Sorting
@@ -36,11 +36,16 @@
             option('value'="name-asc") Name (A to Z)
             option('value'="name-desc") Name (Z to A)
 
-        .col-auto
-          label('for'="select-all") Select all
-          input#select-all('type'="checkbox" 'formControlName'="selectAll" '(change)'="selectAll()")
+        .col-auto.d-flex.justify-content-center.align-items-center
+          label.btn(
+            'for'="select-all"
+            '[class.btn-success]'="inventory.filtered.length === selectedItems.length"
+            '[class.btn-secondary]'="inventory.filtered.length !== selectedItems.length"
+          ) Select all
+          input#select-all.d-none('type'="checkbox" 'formControlName'="selectAll" '(change)'="selectAll()")
   .row
     .col-12.col-lg-3
+
       .card.mb-4( '*ngIf'="!!currentItem" )
         img.card-img-top(
           '[src]'="currentItem.image"
@@ -50,12 +55,10 @@
           h5.card-title('[innerHTML]'="currentItem.marketHashName")
           .card-text
             .row.mb-1
-              .col-12.col-sm-6 category: {{currentItem.category}}
               .col-12.col-sm-6 marketable: {{currentItem.marketable}}
-            .row.mb-1
               .col-12.col-sm-6 tradable: {{currentItem.tradable}}
-              .col-12.col-sm-6 type: {{currentItem.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim()}}
             .row.mb-1
+              .col-12.col-sm-6 type: {{currentItem.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim()}}
               .col-12.col-sm-6 price: {{currentItem.price / 100 | currency: 'USD'}}
           button.btn.btn-primary(
             '[class.btn-primary]'="!isItemSelected(currentItem)"
@@ -63,31 +66,49 @@
             '(click)'="toggleItemInTrade(currentItem)"
             '[innerHTML]'="isItemSelected(currentItem) ? 'Remove from trade' : 'Add to trade'"
           )
+
       .card.mb-4( '*ngIf'="!!selectedItems.length" )
         .d-flex.flex-wrap
-          button.w-50.btn.btn-link.p-0(
+          button.btn.btn-link.p-0(
             '*ngFor'="let item of selectedItems"
-            '(click)'="selectItem(item)"
+            '(click)'="toggleItemInTrade(item)"
+            'style'="width: 33.333333%"
           )
             img.card-img-top(
               '[src]'="item.image"
               '[alt]'="item.name"
             )
     .col-12.col-lg-6
-      .d-flex.flex-wrap
-        div(
-          'style'="width: 14.2857%;"
-          '*ngFor'="let item of inventory.filtered"
+      .d-flex.flex-wrap.mb-2
+        .item-wrapper(
+          '*ngFor'="let item of inventory.filtered.slice( (inventory.pages.current-1)*inventory.pages.itemsPerPage, inventory.pages.current*inventory.pages.itemsPerPage )"
         )
-          button.btn.btn-link.d-block.p-0.item(
+          button.btn.btn-link.d-block.item(
             '[class.selected]'="isItemSelected(item)"
-            '(click)'="selectItem(item)"
+            '(click)'="toggleItemInTrade(item)"
+            'style'="background-size: cover;"
+            '[style.background-image]'="sanitizeStyle(item.image)"
           )
-            img.card-img-top.d-block(
-              '[src]'="item.image"
-              '[alt]'="item.name"
-            )
+            .item-content
+              p.mb-0.price {{item.price / 100 | currency: 'USD'}}
             .hover-content
               h6.mb-0.small {{item.name}}
-              p.mb-0.small {{item.price / 100 | currency: 'USD'}}
-    .col-12.col-lg-3 payment
+        .item-wrapper(
+          '*ngFor'="let key of inventory.emptySlots"
+        )
+          .btn.btn-link.disabled.item
+            .item-content
+      .d-flex
+        nav('aria-label'="Page navigation example")
+          ul.pagination
+            li.page-item
+              button.page-link('type'="button" 'aria-label'="Previous" '(click)'="prevPage()")
+                span('aria-hidden'="true") &laquo;
+                span.sr-only Previous
+            li.page-item
+              button.page-link.disabled {{inventory.pages.current}} / {{inventory.pages.total}}
+            li.page-item
+              button.page-link('type'="button" 'aria-label'="Next" '(click)'="nextPage()")
+                span('aria-hidden'="true") &raquo;
+                span.sr-only Next
+    .col-12.col-lg-3 {{totalCash() | currency: 'USD'}}
