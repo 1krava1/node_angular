@@ -3,7 +3,7 @@ import { InventoryService } from '../shared/services/inventory.service';
 import { UserService } from '../shared/services/user.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-inventory',
@@ -15,10 +15,11 @@ export class InventoryComponent implements OnInit {
     full: [],
     filtered: [],
     emptySlots: [],
+    notTradable: 0,
     pages: {
       current: 1,
-      total: 1,
       itemsPerPage: 36,
+      total: 1,
     },
   };
   user;
@@ -52,10 +53,23 @@ export class InventoryComponent implements OnInit {
       const game = !!params.game ? params.game : 'dota';
       this.currentPage = game;
       this.inventoryService.getInventory(this.user.steamID, game).subscribe((inventory) => {
-        this.inventory.full = Object.values(inventory);
-        this.inventory.filtered = Object.values(inventory);
-        this.inventory.pages.current = 1;
-        this.inventory.pages.total = Math.ceil(Object.values(inventory).length / this.inventory.pages.itemsPerPage);
+        let notTradable = 0;
+        inventory = Object.values(inventory).filter((item) => {
+          if ( !(item.tradable && item.price > 0) ) { notTradable = notTradable + 1; }
+          return item.tradable && item.price > 0;
+        });
+        this.inventory = {
+          full: Object.values(inventory),
+          filtered: Object.values(inventory),
+          notTradable: notTradable,
+          pages: {
+            current: 1,
+            itemsPerPage: this.inventory.pages.itemsPerPage,
+            total: Math.ceil(Object.values(inventory).length / this.inventory.pages.itemsPerPage),
+          },
+          emptySlots: []
+        };
+        this.fillEmptySlots();
         this.selectedItems = [];
         this.types = [];
         this.inventory.full.forEach(item => {
@@ -74,7 +88,7 @@ export class InventoryComponent implements OnInit {
 
   ngOnInit() {}
 
-  sanitizeStyle(url) {
+  sanitizeStyle(url): SafeStyle {
     return this.sanitization.bypassSecurityTrustStyle(`url(${url})`);
   }
   isCurrentPage(page): boolean {
@@ -84,10 +98,10 @@ export class InventoryComponent implements OnInit {
   selectItem(item): void {
     this.currentItem = item;
   }
-  isItemSelected(item) {
+  isItemSelected(item): boolean {
     return this.selectedItems.indexOf(item) !== -1;
   }
-  toggleItemInTrade(item) {
+  toggleItemInTrade(item): void {
     if ( this.selectedItems.indexOf(item) !== -1 ) {
       this.selectedItems.splice(this.selectedItems.indexOf(item), 1);
     } else {
@@ -140,6 +154,7 @@ export class InventoryComponent implements OnInit {
         }
       }
     });
+    this.fillEmptySlots();
   }
   selectAll(): void {
     if ( this.selectedItems.length === this.inventory.filtered.length ) {
@@ -151,20 +166,25 @@ export class InventoryComponent implements OnInit {
     }
   }
 
+  fillEmptySlots(): void {
+    let es = this.inventory.pages.itemsPerPage - this.inventory.filtered.slice(
+      ( this.inventory.pages.current - 1 ) * this.inventory.pages.itemsPerPage,
+      this.inventory.pages.current * this.inventory.pages.itemsPerPage
+    ).length;
+    if ( this.inventory.pages.current === this.inventory.pages.total ) { es--; }
+    this.inventory.emptySlots = new Array(es);
+  }
   nextPage(): void {
-    const es = this.inventory.pages.itemsPerPage - (this.inventory.filtered.length % this.inventory.pages.itemsPerPage);
-    this.inventory.emptySlots = this.inventory.pages.current >= this.inventory.pages.total - 1
-                                ? new Array(es)
-                                : [];
     this.inventory.pages.current = this.inventory.pages.current !== this.inventory.pages.total
                                    ? this.inventory.pages.current + 1
                                    : this.inventory.pages.total;
+    this.fillEmptySlots();
   }
   prevPage(): void {
-    this.inventory.emptySlots = [];
     this.inventory.pages.current = this.inventory.pages.current !== 1
                                    ? this.inventory.pages.current - 1
                                    : 1;
+    this.fillEmptySlots();
   }
 
   totalCash(): number {

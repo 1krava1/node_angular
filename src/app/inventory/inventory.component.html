@@ -1,17 +1,14 @@
 
-<div class="container-fluid">
+<div class="container">
   <div class="row">
-    <div class="container">
-      <div class="col-12">
-        <ul class="nav nav-pills nav-justified my-4">
-          <li class="nav-item" *ngFor="let route of routes"><a class="nav-link" [class.active]="isCurrentPage(route.link)" [routerLink]="['/inventory/' + route.link]">{{route.name | uppercase}}</a></li>
-        </ul>
-      </div>
+    <div class="col-12">
+      <ul class="nav nav-pills nav-justified my-4">
+        <li class="nav-item" *ngFor="let route of routes"><a class="nav-link" [class.active]="isCurrentPage(route.link)" [routerLink]="['/inventory/' + route.link]">{{route.name | uppercase}}</a></li>
+      </ul>
     </div>
   </div>
   <div class="row">
-    <div class="col-12 col-lg-3">p</div>
-    <div class="col-12 col-lg-9">
+    <div class="col-12 col-lg-6">
       <form class="form-row" [formGroup]="sortingForm" *ngIf="!!sortingForm">
         <div class="col-auto">
           <label class="mr-sm-2" for="search">Search</label>
@@ -40,35 +37,22 @@
         </div>
       </form>
     </div>
-  </div>
-  <div class="row">
     <div class="col-12 col-lg-3">
-      <div class="card mb-4" *ngIf="!!currentItem"><img class="card-img-top" [src]="currentItem.image" [alt]="currentItem.name"/>
-        <div class="card-body">
-          <h5 class="card-title" [innerHTML]="currentItem.marketHashName"></h5>
-          <div class="card-text">
-            <div class="row mb-1">
-              <div class="col-12 col-sm-6">marketable: {{currentItem.marketable}}</div>
-              <div class="col-12 col-sm-6">tradable: {{currentItem.tradable}}</div>
-            </div>
-            <div class="row mb-1">
-              <div class="col-12 col-sm-6">type: {{currentItem.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim()}}</div>
-              <div class="col-12 col-sm-6">price: {{currentItem.price / 100 | currency: 'USD'}}</div>
-            </div>
-          </div>
-          <button class="btn btn-primary" [class.btn-primary]="!isItemSelected(currentItem)" [class.btn-danger]="isItemSelected(currentItem)" (click)="toggleItemInTrade(currentItem)" [innerHTML]="isItemSelected(currentItem) ? 'Remove from trade' : 'Add to trade'"></button>
-        </div>
-      </div>
-      <div class="card mb-4" *ngIf="!!selectedItems.length">
-        <div class="d-flex flex-wrap">
-          <button class="btn btn-link p-0" *ngFor="let item of selectedItems" (click)="toggleItemInTrade(item)" style="width: 33.333333%"><img class="card-img-top" [src]="item.image" [alt]="item.name"/></button>
-        </div>
+      <div class="d-flex flex-column justify-content-end h-100">
+        <h5>Selected items</h5>
       </div>
     </div>
+    <div class="col-12 col-lg-3">
+      <div class="d-flex flex-column justify-content-end h-100">
+        <h5>Checkout</h5>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-12 col-lg-6">
       <div class="d-flex flex-wrap mb-2">
         <div class="item-wrapper" *ngFor="let item of inventory.filtered.slice( (inventory.pages.current-1)*inventory.pages.itemsPerPage, inventory.pages.current*inventory.pages.itemsPerPage )">
-          <button class="btn btn-link d-block item" [class.selected]="isItemSelected(item)" (click)="toggleItemInTrade(item)" style="background-size: cover;" [style.background-image]="sanitizeStyle(item.image)">
+          <button class="btn btn-link d-block item" [class.selected]="isItemSelected(item)" (click)="toggleItemInTrade(item)" style="background-size: cover;" [style.background-image]="sanitizeStyle(item.image)" [disabled]="!item.tradable || !item.price">
             <div class="item-content">
               <p class="mb-0 price">{{item.price / 100 | currency: 'USD'}}</p>
             </div>
@@ -76,6 +60,14 @@
               <h6 class="mb-0 small">{{item.name}}</h6>
             </div>
           </button>
+        </div>
+        <div class="item-wrapper" *ngIf="inventory.pages.current === inventory.pages.total">
+          <div class="btn btn-link disabled item">
+            <div class="item-content">
+              <h6 class="mb-0 px-1 small">Not tradable items</h6>
+              <h6 class="mb-0 small">{{inventory.notTradable}}</h6>
+            </div>
+          </div>
         </div>
         <div class="item-wrapper" *ngFor="let key of inventory.emptySlots">
           <div class="btn btn-link disabled item">
@@ -97,6 +89,29 @@
             </li>
           </ul>
         </nav>
+      </div>
+    </div>
+    <div class="col-12 col-lg-3">
+      <div class="card mb-4" *ngIf="!!currentItem"><img class="card-img-top" [src]="currentItem.image" [alt]="currentItem.name"/>
+        <div class="card-body">
+          <h5 class="card-title" [innerHTML]="currentItem.marketHashName"></h5>
+          <div class="card-text">
+            <div class="row mb-1">
+              <div class="col-12 col-sm-6">marketable: {{currentItem.marketable}}</div>
+              <div class="col-12 col-sm-6">tradeable: {{currentItem.tradable}}</div>
+            </div>
+            <div class="row mb-1">
+              <div class="col-12 col-sm-6">type: {{currentItem.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim()}}</div>
+              <div class="col-12 col-sm-6">price: {{currentItem.price / 100 | currency: 'USD'}}</div>
+            </div>
+          </div>
+          <button class="btn btn-primary" [class.btn-primary]="!isItemSelected(currentItem)" [class.btn-danger]="isItemSelected(currentItem)" (click)="toggleItemInTrade(currentItem)" [innerHTML]="isItemSelected(currentItem) ? 'Remove from trade' : 'Add to trade'"></button>
+        </div>
+      </div>
+      <div class="card mb-4" *ngIf="!!selectedItems.length">
+        <div class="d-flex flex-wrap">
+          <button class="btn btn-link p-0" *ngFor="let item of selectedItems" (click)="toggleItemInTrade(item)" style="width: 33.333333%"><img class="card-img-top" [src]="item.image" [alt]="item.name"/></button>
+        </div>
       </div>
     </div>
     <div class="col-12 col-lg-3">{{totalCash() | currency: 'USD'}}</div>

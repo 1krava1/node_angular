@@ -24,6 +24,14 @@
             background: rgba(0, 255, 0, .3);
         }
     }
+    &.disabled{
+        .item-content{
+            justify-content: center;
+            h6{
+                white-space: pre-wrap;
+            }
+        }
+    } 
     .item-content{
         position: absolute;
         width: 100%;
