@@ -114,6 +114,8 @@
         </div>
       </div>
     </div>
-    <div class="col-12 col-lg-3">{{totalCash() | currency: 'USD'}}</div>
+    <div class="col-12 col-lg-3"> 
+      <app-checkout [sum]="totalCash()"></app-checkout>{{totalCash() | currency: 'USD'}}
+    </div>
   </div>
 </div>

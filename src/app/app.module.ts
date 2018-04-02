@@ -3,7 +3,9 @@ import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { FormBuilder } from '@angular/forms';
+import { SharedModule } from './shared/shared.module';
 
 import { AppComponent } from './app.component';
 import { SignUpComponent } from './signup/signup.component';
@@ -14,7 +16,6 @@ import { InventoryComponent } from './inventory/inventory.component';
 
 import { InventoryService } from './shared/services/inventory.service';
 import { UserService } from './shared/services/user.service';
-import { HttpClientModule } from '@angular/common/http';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 
 export function tG() {
@@ -32,8 +33,8 @@ export function tG() {
   ],
   imports: [
     HttpClientModule,
-    ReactiveFormsModule,
     AppRoutingModule,
+    SharedModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tG

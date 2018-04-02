@@ -1,0 +1,24 @@
+
+<form class="card mb-4" *ngIf="!!paymentSystems.length" [formGroup]="checkoutForm">
+  <div class="col-12">
+    <div class="form-group d-flex flex-wrap">
+      <label class="w-100">Payment System {{sum}}:</label>
+      <div class="payment-system-wrapper p-1" *ngFor="let ps of paymentSystems" style="width: 33.333333%">
+        <input class="payment-system-checkbox d-none" type="radio" formControlName="paymentSystem" value="{{ps.tag}}" id="ps-{{ps.tag}}"/>
+        <label class="payment-system-label btn btn-link w-100 mb-0 py-2 px-1" for="ps-{{ps.tag}}">{{ ps.name }}</label>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input class="form-control" type="email" id="email" formControlName="email" placeholder="example@email.com"/>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="form-group">
+      <label for="walletNumber">Wallet Number:</label>
+      <input class="form-control" type="walletNumber" id="walletNumber" placeholder=""/>
+    </div>
+  </div>
+</form>
