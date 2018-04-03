@@ -1,0 +1,90 @@
+[
+    {
+      "tag": "bitcoin",
+      "name": "bitcoin",
+      "extraField": {
+          "title": "BTC Address",
+          "mask": "btc"
+      }
+    },
+    {
+      "tag": "privat24",
+      "name": "privat24",
+      "extraField": {
+          "title": "Card Number",
+          "mask": "ccNumber"
+      }
+    },
+    {
+      "tag": "visa",
+      "name": "visa",
+      "extraField": {
+          "title": "Card Number",
+          "mask": "ccNumber"
+      }
+    },
+    {
+      "tag": "paypal",
+      "name": "paypal",
+      "extraField": {
+          "title": "",
+          "mask": ""
+      }
+    },
+    {
+      "tag": "webmoney",
+      "name": "webmoney",
+      "extraField": {
+          "title": "Wallet Number",
+          "mask": "wmw"
+      }
+    },
+    {
+      "tag": "qiwi",
+      "name": "qiwi",
+      "extraField": {
+          "title": "Wallet Number",
+          "mask": "phone"
+      }
+    },
+    {
+      "tag": "yandex",
+      "name": "yandex",
+      "extraField": {
+          "title": "Wallet Number",
+          "mask": "yandex"
+      }
+    },
+    {
+      "tag": "cell",
+      "name": "cell",
+      "extraField": {
+          "title": "Phone Number",
+          "mask": "phone"
+      }
+    },
+    {
+      "tag": "pm",
+      "name": "perfectmoney",
+      "extraField": {
+          "title": "Wallet Number",
+          "mask": "pm"
+      }
+    },
+    {
+      "tag": "pe",
+      "name": "payeer",
+      "extraField": {
+          "title": "Wallet Number",
+          "mask": "pe"
+      }
+    },
+    {
+      "tag": "okp",
+      "name": "okpay",
+      "extraField": {
+          "title": "Wallet Number",
+          "mask": "okp"
+      }
+    }
+]
