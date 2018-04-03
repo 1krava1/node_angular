@@ -19,7 +19,7 @@ import { UserService } from './shared/services/user.service';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
 
 export function tG() {
-  return localStorage.getItem('jwt');
+  return typeof localStorage !== 'undefined' ? localStorage.getItem('jwt') : '';
 }
 
 @NgModule({
@@ -32,6 +32,7 @@ export function tG() {
     InventoryComponent,
   ],
   imports: [
+    BrowserModule.withServerTransition({ appId: 'science' }),
     HttpClientModule,
     AppRoutingModule,
     SharedModule,
@@ -41,7 +42,6 @@ export function tG() {
       }
     }),
     NgbModule.forRoot(),
-    BrowserModule.withServerTransition({ appId: 'science' })
   ],
   providers: [
     FormBuilder,

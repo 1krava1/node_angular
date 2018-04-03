@@ -23,16 +23,16 @@ export class UserService {
   }
 
   setUserToken(token) {
-    if ( !!localStorage ) {
+    if ( typeof localStorage !== 'undefined' ) {
       localStorage.setItem('jwt', token);
       this.setUser();
     }
   }
   getUserToken() {
-    if ( !!localStorage ) return localStorage.getItem('jwt');
+    if ( typeof localStorage !== 'undefined' ) return localStorage.getItem('jwt');
   }
   isLoggedIn() {
-    return !!localStorage && !!localStorage.getItem('jwt');
+    return typeof localStorage !== 'undefined' && !!localStorage.getItem('jwt');
   }
 
   getUser() {
@@ -48,7 +48,7 @@ export class UserService {
   }
 
   logout(): void {
-    if ( !!localStorage ) localStorage.removeItem('jwt');
+    if ( typeof localStorage !== 'undefined' ) localStorage.removeItem('jwt');
     this.user.emit(null);
   }
 }

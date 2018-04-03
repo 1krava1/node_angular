@@ -12,7 +12,12 @@ module.exports = {
     }
   },
   target: 'node',
-  externals: [nodeExternals()],
+  externals: [nodeExternals({
+    whitelist: [
+      /^@ng-bootstrap\/ng-bootstrap/,
+      /^@auth0\/angular-jwt/
+    ]
+  })],
   output: {
     path: path.join(__dirname, 'dist'),
     filename: '[name].js'

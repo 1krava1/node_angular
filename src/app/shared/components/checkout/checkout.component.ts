@@ -16,7 +16,7 @@ export class CheckoutComponent implements OnInit, OnChanges {
     title: '',
     mask: '',
   };
-  paymentSystems = ps;
+  paymentSystems = [].concat(ps);
   masks = {
     phone: ['(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/],
     ccNumber: [/\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/, ' ', /\d/, /\d/, /\d/, /\d/],
@@ -90,9 +90,9 @@ export class CheckoutComponent implements OnInit, OnChanges {
         mask: ''
       };
     } else {
-      const currentPaymentSystem = this.paymentSystems.filter( (ps) => {
-        if ( !!ps.extraField.title ) {
-          return ps.tag === this.checkoutForm.controls.paymentSystem.value;
+      const currentPaymentSystem = this.paymentSystems.filter( (paySystem) => {
+        if ( !!paySystem.extraField.title ) {
+          return paySystem.tag === this.checkoutForm.controls.paymentSystem.value;
         } else {
           return false;
         }
