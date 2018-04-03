@@ -11,5 +11,9 @@
         color: #212529;
         text-transform: capitalize;
         text-decoration: none;
+        font-size: 14px;
+        &.disabled{
+            pointer-events: none;
+        }
     }
 }
