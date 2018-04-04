@@ -4,6 +4,8 @@ import { AppComponent } from './app.component';
 import { SignUpComponent } from './signup/signup.component';
 import { MainComponent } from './main/main.component';
 import { InventoryComponent } from './inventory/inventory.component';
+import { AccountComponent } from './account/account.component';
+import { AuthGuardService as isAuthorised } from './shared/guards/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -21,10 +23,17 @@ const routes: Routes = [
   {
     path: 'inventory/:game',
     component: InventoryComponent,
+    canActivate: [isAuthorised]
   },
   {
     path: 'inventory',
     component: InventoryComponent,
+    canActivate: [isAuthorised]
+  },
+  {
+    path: 'account',
+    component: AccountComponent,
+    canActivate: [isAuthorised]
   },
 ];
 

@@ -1,7 +1,7 @@
 form.card.mb-4( '*ngIf'="!!paymentSystems.length" '[formGroup]'="checkoutForm")
     .col-12
         .form-group.d-flex.flex-wrap
-            label.w-100 Payment System {{sum}}:
+            label.w-100 Payment System:
             .payment-system-wrapper.p-1(
                     '*ngFor'="let ps of paymentSystems"
                     'style'="width: 33.333333%"

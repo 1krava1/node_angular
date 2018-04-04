@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import {Observable} from 'rxjs/Observable';
 import {JwtHelperService} from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class UserService {
@@ -11,7 +12,8 @@ export class UserService {
   user = new EventEmitter();
 
   constructor(private http: HttpClient,
-              private jwtHelperService: JwtHelperService) {
+              private jwtHelperService: JwtHelperService,
+              private router: Router) {
     this.user.emit(this.getUser());
   }
 
@@ -22,16 +24,19 @@ export class UserService {
     return this.http.post( this.backendUrl + '/users/signin', JSON.stringify(data) );
   }
 
-  setUserToken(token) {
+  setUserToken(token): void {
     if ( typeof localStorage !== 'undefined' ) {
       localStorage.setItem('jwt', token);
       this.setUser();
     }
   }
   getUserToken() {
-    if ( typeof localStorage !== 'undefined' ) return localStorage.getItem('jwt');
+    if ( this.jwtHelperService.isTokenExpired(localStorage.getItem('jwt')) ) { this.logout(); return; }
+    if ( typeof localStorage !== 'undefined' ) {
+      return localStorage.getItem('jwt');
+    }
   }
-  isLoggedIn() {
+  isLoggedIn(): boolean {
     return typeof localStorage !== 'undefined' && !!localStorage.getItem('jwt');
   }
 
@@ -40,7 +45,7 @@ export class UserService {
       return this.getUserToken() ? this.jwtHelperService.decodeToken(this.getUserToken()).data._doc : false;
     }
   }
-  setUser() {
+  setUser(): void {
     this.user.emit( this.getUser() );
   }
   getUserField(field) {
@@ -48,7 +53,8 @@ export class UserService {
   }
 
   logout(): void {
-    if ( typeof localStorage !== 'undefined' ) localStorage.removeItem('jwt');
+    if ( typeof localStorage !== 'undefined' ) { localStorage.removeItem('jwt'); }
     this.user.emit(null);
+    this.router.navigate(['/']);
   }
 }

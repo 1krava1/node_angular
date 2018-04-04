@@ -14,7 +14,7 @@ export class InventoryComponent implements OnInit {
   inventory = {
     full: [],
     filtered: [],
-    emptySlots: [],
+    emptySlots: Array(36),
     notTradable: 0,
     pages: {
       current: 1,

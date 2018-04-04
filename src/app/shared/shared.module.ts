@@ -13,8 +13,8 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
     ],
     exports: [
         ReactiveFormsModule,
-        CheckoutComponent,
         TextMaskModule,
+        CheckoutComponent,
     ],
     declarations: [CheckoutComponent],
     providers: [],

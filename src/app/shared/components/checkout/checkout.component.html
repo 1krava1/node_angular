@@ -1,1 +1,38 @@
-<form class="card mb-4" *ngIf="!!paymentSystems.length" [formGroup]="checkoutForm"><div class="col-12"><div class="form-group d-flex flex-wrap"><label class="w-100">Payment System {{sum}}:</label><div class="payment-system-wrapper p-1" *ngFor="let ps of paymentSystems" style="width: 33.333333%"><input class="payment-system-checkbox d-none" type="radio" formControlName="paymentSystem" value="{{ps.tag}}" id="ps-{{ps.tag}}" (change)="setExtraField()"/><label class="payment-system-label btn btn-link w-100 mb-0 py-2 px-1" for="ps-{{ps.tag}}" [class.disabled]="!sum">{{ ps.name }}</label></div></div></div><div class="col-12" *ngIf="checkoutForm.controls.paymentSystem.value !== ''"><div class="form-group"><label for="email">Email:</label><input class="form-control" type="email" id="email" formControlName="email" placeholder="example@email.com"/></div></div><div class="col-12" *ngIf="!!checkoutForm.get('walletNumber') &amp;&amp; checkoutForm.controls.paymentSystem.value !== ''"><div class="form-group"><label for="walletNumber">{{extraField.title}}:</label><div class="input-group"><div class="input-group-prepend" *ngIf="!!prefix[checkoutForm.controls.paymentSystem.value] || !!prependField[checkoutForm.controls.paymentSystem.value]"><div class="input-group-text p-0" [class.p-0]="!!prependField[checkoutForm.controls.paymentSystem.value]"><select class="form-control border-0" *ngIf="!!prependField[checkoutForm.controls.paymentSystem.value]"><option *ngFor="let code of prependField[checkoutForm.controls.paymentSystem.value]" [value]="code">{{code | uppercase}}</option></select><span *ngIf="!!prefix[checkoutForm.controls.paymentSystem.value]">{{prefix[checkoutForm.controls.paymentSystem.value]}}</span></div></div><input class="form-control" [textMask]="{mask: extraField.mask}" type="walletNumber" id="walletNumber" formControlName="walletNumber" placeholder=""/></div></div></div><div class="col-12" *ngIf="checkoutForm.valid"><div class="form-group"><button class="btn btn-success btn-block" type="submit">Get cash</button></div></div></form>
+
+<form class="card mb-4" *ngIf="!!paymentSystems.length" [formGroup]="checkoutForm">
+  <div class="col-12">
+    <div class="form-group d-flex flex-wrap">
+      <label class="w-100">Payment System:</label>
+      <div class="payment-system-wrapper p-1" *ngFor="let ps of paymentSystems" style="width: 33.333333%">
+        <input class="payment-system-checkbox d-none" type="radio" formControlName="paymentSystem" value="{{ps.tag}}" id="ps-{{ps.tag}}" (change)="setExtraField()"/>
+        <label class="payment-system-label btn btn-link w-100 mb-0 py-2 px-1" for="ps-{{ps.tag}}" [class.disabled]="!sum">{{ ps.name }}</label>
+      </div>
+    </div>
+  </div>
+  <div class="col-12" *ngIf="checkoutForm.controls.paymentSystem.value !== ''">
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input class="form-control" type="email" id="email" formControlName="email" placeholder="example@email.com"/>
+    </div>
+  </div>
+  <div class="col-12" *ngIf="!!checkoutForm.get('walletNumber') &amp;&amp; checkoutForm.controls.paymentSystem.value !== ''">
+    <div class="form-group">
+      <label for="walletNumber">{{extraField.title}}:</label>
+      <div class="input-group">
+        <div class="input-group-prepend" *ngIf="!!prefix[checkoutForm.controls.paymentSystem.value] || !!prependField[checkoutForm.controls.paymentSystem.value]">
+          <div class="input-group-text p-0" [class.p-0]="!!prependField[checkoutForm.controls.paymentSystem.value]">
+            <select class="form-control border-0" *ngIf="!!prependField[checkoutForm.controls.paymentSystem.value]">
+              <option *ngFor="let code of prependField[checkoutForm.controls.paymentSystem.value]" [value]="code">{{code | uppercase}}</option>
+            </select><span *ngIf="!!prefix[checkoutForm.controls.paymentSystem.value]">{{prefix[checkoutForm.controls.paymentSystem.value]}}</span>
+          </div>
+        </div>
+        <input class="form-control" [textMask]="{mask: extraField.mask}" type="walletNumber" id="walletNumber" formControlName="walletNumber" placeholder=""/>
+      </div>
+    </div>
+  </div>
+  <div class="col-12" *ngIf="checkoutForm.valid">
+    <div class="form-group">
+      <button class="btn btn-success btn-block" type="submit">Get cash</button>
+    </div>
+  </div>
+</form>

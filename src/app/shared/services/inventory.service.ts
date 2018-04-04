@@ -1,6 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class InventoryService {
@@ -10,7 +11,7 @@ export class InventoryService {
 
   constructor(private http: HttpClient) {}
 
-  getInventory(steamid, game){
+  getInventory(steamid, game) {
     return this.http.get( environment.backend + '/inventory/' + steamid + '/' + game );
   }
 }

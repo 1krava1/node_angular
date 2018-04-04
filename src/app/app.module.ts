@@ -13,10 +13,12 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { MainComponent } from './main/main.component';
 import { InventoryComponent } from './inventory/inventory.component';
+import { AccountComponent } from './account/account.component';
 
 import { InventoryService } from './shared/services/inventory.service';
 import { UserService } from './shared/services/user.service';
 import { JwtHelperService, JwtModule } from '@auth0/angular-jwt';
+import { AuthGuardService } from './shared/guards/auth-guard.service';
 
 export function tG() {
   return typeof localStorage !== 'undefined' ? localStorage.getItem('jwt') : '';
@@ -30,6 +32,7 @@ export function tG() {
     FooterComponent,
     MainComponent,
     InventoryComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'science' }),
@@ -49,6 +52,7 @@ export function tG() {
     InventoryService,
     JwtModule,
     JwtHelperService,
+    AuthGuardService,
   ],
   bootstrap: [AppComponent]
 })
