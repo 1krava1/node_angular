@@ -1,1 +1,45 @@
-p faq
+.faq.container
+    .row
+        .col-12
+            h1.page-title.text-center.my-4 Frequently asked questions
+            section.row
+                aside.col-12.col-sm-5.col-md-4
+                    ngb-accordion(
+                            '#acc'="ngbAccordion"
+                            '[closeOthers]'="true"
+                            'activeIds'="ngb-panel-0"
+                        )
+                        ngb-panel('*ngFor'="let faq of FAQ")
+                            ng-template('ngbPanelTitle')
+                                button.btn.btn-block(
+                                    'id'="select-{{faq.section.id}}"
+                                    '(click)'="t.select(faq.section.id); setActiveTab(faq.section.id)"
+                                ) {{faq.section.title}}
+                            ng-template('ngbPanelContent')
+                                button(
+                                    '*ngFor'="let question of faq.questions"
+                                    'class'="btn btn-block"
+                                    '[class.selected]'="faq.section.id + '-' + question.id === activePanel"
+                                    '[disabled]'="faq.section.id + '-' + question.id === activePanel"
+                                    'id'="select-{{faq.section.id + '-' + question.id}}"
+                                    '(click)'="openTab(faq.section.id + '-' + question.id);"
+                                ) {{question.title}}
+                article.col-12.col-sm-7.col-md-8.answers-list
+                    ngb-tabset( '#t'="ngbTabset" )
+                        ngb-tab(
+                            '*ngFor'="let faq of FAQ"
+                            'id'="{{faq.section.id}}"
+                        )
+                            ng-template('ngbTabContent')
+                                ngb-accordion(
+                                    '[closeOthers]'="true"
+                                    '(panelChange)'="setActivePanel($event)"
+                                    '[activeIds]'="faq.section.id + '-' + faq.questions[0].id"
+                                )
+                                    ngb-panel(
+                                        '*ngFor'="let question of faq.questions"
+                                        'id'="{{faq.section.id + '-' + question.id}}"
+                                    )    
+                                        ng-template('ngbPanelTitle') {{question.title}}
+                                        ng-template('ngbPanelContent')
+                                            div('[innerHTML]'="question.content | sanitizedHTML")

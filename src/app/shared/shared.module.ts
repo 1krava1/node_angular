@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
 
 import { CheckoutComponent } from './components/checkout/checkout.component';
+import { SanitizedHTML } from './pipes/sanitized-html.pipe';
 
 @NgModule({
     imports: [
@@ -15,8 +16,12 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
         ReactiveFormsModule,
         TextMaskModule,
         CheckoutComponent,
+        SanitizedHTML,
     ],
-    declarations: [CheckoutComponent],
+    declarations: [
+        CheckoutComponent,
+        SanitizedHTML,
+    ],
     providers: [],
 })
 export class SharedModule { }

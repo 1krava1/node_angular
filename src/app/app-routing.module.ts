@@ -5,6 +5,8 @@ import { SignUpComponent } from './signup/signup.component';
 import { MainComponent } from './main/main.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { AccountComponent } from './account/account.component';
+import { FaqComponent } from './faq/faq.component';
+
 import { AuthGuardService as isAuthorised } from './shared/guards/auth-guard.service';
 
 const routes: Routes = [
@@ -35,6 +37,10 @@ const routes: Routes = [
     component: AccountComponent,
     canActivate: [isAuthorised]
   },
+  {
+    path: 'faq',
+    component: FaqComponent,
+  }
 ];
 
 @NgModule({

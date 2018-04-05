@@ -1,2 +1,38 @@
 
-<p>faq</p>
+<div class="faq container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="page-title text-center my-4">Frequently asked questions</h1>
+      <section class="row">
+        <aside class="col-12 col-sm-5 col-md-4">
+          <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" activeIds="ngb-panel-0">
+            <ngb-panel *ngFor="let faq of FAQ">
+              <ng-template ngbPanelTitle="ngbPanelTitle">
+                <button class="btn btn-block" id="select-{{faq.section.id}}" (click)="t.select(faq.section.id); setActiveTab(faq.section.id)">{{faq.section.title}}</button>
+              </ng-template>
+              <ng-template ngbPanelContent="ngbPanelContent">
+                <button class="btn btn-block" *ngFor="let question of faq.questions" [class.selected]="faq.section.id + '-' + question.id === activePanel" [disabled]="faq.section.id + '-' + question.id === activePanel" id="select-{{faq.section.id + '-' + question.id}}" (click)="openTab(faq.section.id + '-' + question.id);">{{question.title}}</button>
+              </ng-template>
+            </ngb-panel>
+          </ngb-accordion>
+        </aside>
+        <article class="col-12 col-sm-7 col-md-8 answers-list">
+          <ngb-tabset #t="ngbTabset">
+            <ngb-tab *ngFor="let faq of FAQ" id="{{faq.section.id}}">
+              <ng-template ngbTabContent="ngbTabContent">
+                <ngb-accordion [closeOthers]="true" (panelChange)="setActivePanel($event)" [activeIds]="faq.section.id + '-' + faq.questions[0].id">
+                  <ngb-panel *ngFor="let question of faq.questions" id="{{faq.section.id + '-' + question.id}}">   
+                    <ng-template ngbPanelTitle="ngbPanelTitle">{{question.title}}</ng-template>
+                    <ng-template ngbPanelContent="ngbPanelContent">
+                      <div [innerHTML]="question.content | sanitizedHTML"></div>
+                    </ng-template>
+                  </ngb-panel>
+                </ngb-accordion>
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </article>
+      </section>
+    </div>
+  </div>
+</div>

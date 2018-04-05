@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbAccordionConfig, NgbAccordion, NgbTabsetConfig, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { MainComponent } from './main/main.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { AccountComponent } from './account/account.component';
+import { FaqComponent } from './faq/faq.component';
 
 import { InventoryService } from './shared/services/inventory.service';
 import { UserService } from './shared/services/user.service';
@@ -32,9 +33,11 @@ export function tG() {
     FooterComponent,
     MainComponent,
     InventoryComponent,
-    AccountComponent
+    AccountComponent,
+    FaqComponent,
   ],
   imports: [
+    NgbModule,
     BrowserModule.withServerTransition({ appId: 'science' }),
     HttpClientModule,
     AppRoutingModule,
@@ -44,7 +47,6 @@ export function tG() {
         tokenGetter: tG
       }
     }),
-    NgbModule.forRoot(),
   ],
   providers: [
     FormBuilder,
@@ -53,6 +55,10 @@ export function tG() {
     JwtModule,
     JwtHelperService,
     AuthGuardService,
+    NgbAccordion,
+    NgbAccordionConfig,
+    NgbTabsetConfig,
+    NgbDropdownConfig,
   ],
   bootstrap: [AppComponent]
 })
