@@ -1,42 +1,151 @@
 
-<div class="container py-4">
-  <div class="row">
-    <div class="col-3">
-      <div class="card mb-4">
-        <header class="card-header">
-          <h5 class="card-title mb-0">Your summary</h5>
-        </header>
-        <div class="card-body p-0">
-          <div class="row p-3">
-            <div class="col-4"><img class="card-img" src="http://via.placeholder.com/184x184"/></div>
-            <div class="col-8"><span>user.name</span><br/><a href="http://steamcommunity.com/profiles/user.steamid/edit/settings">Privacy settings</a><br/><a href="http://steamcommunity.com/profiles/user.steamid/tradeoffers">Trade offers</a></div>
+<div class="container-fluid bg-dark">
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-12 col-md-4 col-lg-3">
+        <div class="card mb-3">
+          <header class="card-header">
+            <h5 class="card-title mb-0">Your summary</h5>
+          </header>
+          <div class="card-body p-0">
+            <div class="row p-3">
+              <div class="col-4"><img class="card-img" src="http://via.placeholder.com/184x184"/></div>
+              <div class="col-8"><span>user.name</span><br/><a href="http://steamcommunity.com/profiles/user.steamid/edit/settings">Privacy settings</a><br/><a href="http://steamcommunity.com/profiles/user.steamid/tradeoffers">Trade offers</a></div>
+            </div>
+            <ul class="list-group">
+              <li class="list-group-item border-left-0 border-right-0">user.bonus</li>
+              <li class="list-group-item border-left-0 border-right-0">user.deals</li>
+              <li class="list-group-item border-left-0 border-right-0">user.cashout</li>
+              <li class="list-group-item border-left-0 border-right-0 border-bottom-0">user.balance</li>
+            </ul>
           </div>
-          <ul class="list-group">
-            <li class="list-group-item border-left-0 border-right-0">user.bonus</li>
-            <li class="list-group-item border-left-0 border-right-0">user.deals</li>
-            <li class="list-group-item border-left-0 border-right-0">user.cashout</li>
-            <li class="list-group-item border-left-0 border-right-0 border-bottom-0">user.balance</li>
-          </ul>
+        </div>
+        <div class="card">
+          <header class="card-header">
+            <h5 class="card-title mb-0">Name bonus</h5>
+          </header>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12">
+                <p>Add "wat" to your steam name and get 1% bonus</p>
+              </div>
+              <div class="col-12">
+                <button class="w-100 btn btn-link"><i class="fas fa-sync-alt mr-2"></i>Refresh name</button><a class="w-100 btn btn-outline-success" target="_blank" href="https://steamcommunity.com/profiles/user.steamid/edit"><i class="fas fa-external-link-alt mr-2"></i>Add now</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="card">
-        <header class="card-header">
-          <h5 class="card-title mb-0">Name bonus</h5>
-        </header>
-        <div class="card-body p-0">
-          <div class="row p-3">
-            <div class="col-4"><img class="card-img" src="http://via.placeholder.com/184x184"/></div>
-            <div class="col-8"><span>user.name</span><br/><a href="http://steamcommunity.com/profiles/user.steamid/edit/settings">Privacy settings</a><br/><a href="http://steamcommunity.com/profiles/user.steamid/tradeoffers">Trade offers</a></div>
+      <div class="col-12 col-md-8 col-lg-9">
+        <div class="card mb-3">
+          <header class="card-header">
+            <h5 class="card-title mb-0">Your steam trade link</h5>
+          </header>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="input-group input-group-lg">
+                  <input class="form-control" type="text" placeholder="Your trade link" aria-label="Your trade link" aria-describedby="basic-addon2"/>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-info" type="button">Change</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <ul class="list-group">
-            <li class="list-group-item border-left-0 border-right-0">user.bonus</li>
-            <li class="list-group-item border-left-0 border-right-0">user.deals</li>
-            <li class="list-group-item border-left-0 border-right-0">user.cashout</li>
-            <li class="list-group-item border-left-0 border-right-0 border-bottom-0">user.balance</li>
-          </ul>
+        </div>
+        <div class="card mb-3">
+          <header class="card-header">
+            <h5 class="card-title mb-0">Your current bonus rank</h5>
+          </header>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-2"><img class="card-img" src="http://via.placeholder.com/128x128"/>rank.current.name (+1%)</div>
+              <div class="col-12 col-md-6 col-lg-8">
+                <div class="d-flex flex-column justify-content-center h-100">
+                  <p class="text-center mb-1">$1 / $25 (Rank 2)</p>
+                  <div class="progress w-100" style="height: 24px;">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: 4.8%" aria-valuenow="1" aria-valuemin="0" aria-valuemax="25"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-2"><img class="card-img" src="http://via.placeholder.com/128x128"/>rank.next.name (+2%)</div>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-3">
+          <header class="card-header">
+            <h5 class="card-title mb-0">Your affiliate status</h5>
+          </header>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 col-md-6 col-lg-2"><img class="card-img" src="http://via.placeholder.com/128x128"/>Level 1</div>
+              <div class="col-12 col-md-6 col-lg-3">
+                <div class="d-flex flex-column justify-content-center h-100">
+                  <ul class="list-group mb-2">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">Your earnings:<span class="badge badge-primary badge-pill">$3</span></li>
+                    <li class="list-group-item"><a class="btn btn-link p-0" [routerLink]="['/account']">Affiliate details</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-5">
+                <div class="d-flex flex-column justify-content-center h-100">
+                  <p class="text-center mb-1">2 referrers / 5 (Level 2)</p>
+                  <div class="progress w-100" style="height: 24px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuenow="2" aria-valuemin="0" aria-valuemax="5"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6 col-lg-2"><img class="card-img" src="http://via.placeholder.com/128x128"/>Level 2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="card mb-3">
+          <header class="card-header">
+            <h5 class="card-title mb-0">Your payment history</h5>
+          </header>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-striped mb-0">
+                <thead>
+                  <tr>
+                    <th class="border-top-0" scope="col">Transaction ID</th>
+                    <th class="border-top-0" scope="col">Date</th>
+                    <th class="border-top-0" scope="col">Payment system</th>
+                    <th class="border-top-0" scope="col">Amount</th>
+                    <th class="border-top-0" scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">transaction.id</th>
+                    <td>2018-03-29 14:27:36</td>
+                    <td>PayPal email@google.com</td>
+                    <td>$200</td>
+                    <td class="text-danger"><i class="fas fa-times mr-2"></i>error</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">transaction.id</th>
+                    <td>2018-02-15 16:00:36</td>
+                    <td>WebMoney WMU123123123123</td>
+                    <td>$1</td>
+                    <td class="text-success"><i class="fas fa-check mr-2"></i>complete</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">transaction.id</th>
+                    <td>2017-12-29 10:13:36</td>
+                    <td>Card 1234 1234 1341 2341</td>
+                    <td>$50</td>
+                    <td class="text-secondary"><i class="fas fa-times mr-2"></i>canceled</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-9"></div>
   </div>
 </div>

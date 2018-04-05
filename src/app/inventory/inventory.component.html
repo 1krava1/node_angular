@@ -31,7 +31,7 @@
             <option value="name-desc">Name (Z to A)</option>
           </select>
         </div>
-        <div class="col-auto d-flex justify-content-center align-items-center">
+        <div class="col-auto d-flex justify-content-center align-items-end">
           <label class="btn" for="select-all" [class.btn-success]="inventory.filtered.length === selectedItems.length" [class.btn-secondary]="inventory.filtered.length !== selectedItems.length">Select all</label>
           <input class="d-none" id="select-all" type="checkbox" formControlName="selectAll" (change)="selectAll()"/>
         </div>
