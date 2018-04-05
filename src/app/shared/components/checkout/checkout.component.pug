@@ -1,44 +1,54 @@
-form.card.mb-4( '*ngIf'="!!paymentSystems.length" '[formGroup]'="checkoutForm")
-    .col-12
-        .form-group.d-flex.flex-wrap
-            label.w-100 Payment System:
-            .payment-system-wrapper.p-1(
-                    '*ngFor'="let ps of paymentSystems"
-                    'style'="width: 33.333333%"
-                )
-                input.payment-system-checkbox.d-none(
-                    'type'="radio"
-                    'formControlName'="paymentSystem"
-                    'value'="{{ps.tag}}"
-                    'id'="ps-{{ps.tag}}"
-                    '(change)'="setExtraField()"
-                )
-                label.payment-system-label.btn.btn-link.w-100.mb-0.py-2.px-1(
-                    'for'="ps-{{ps.tag}}"
-                    '[class.disabled]'="!sum"
-                ) {{ ps.name }}
-    .col-12('*ngIf'="checkoutForm.controls.paymentSystem.value !== ''")
-        .form-group
-            label( 'for'="email" ) Email:
-            input.form-control( 'type'="email" 'id'="email" 'formControlName'="email" placeholder="example@email.com" )
-    .col-12('*ngIf'="!!checkoutForm.get('walletNumber') && checkoutForm.controls.paymentSystem.value !== ''")
-        .form-group
-            label( 'for'="walletNumber" ) {{extraField.title}}:
-            .input-group
-                .input-group-prepend('*ngIf'="!!prefix[checkoutForm.controls.paymentSystem.value] || !!prependField[checkoutForm.controls.paymentSystem.value]")
-                    .input-group-text.p-0(
-                        [class.p-0]="!!prependField[checkoutForm.controls.paymentSystem.value]"
-                    )
-                        select.form-control.border-0('*ngIf'="!!prependField[checkoutForm.controls.paymentSystem.value]")
-                            option('*ngFor'="let code of prependField[checkoutForm.controls.paymentSystem.value]" '[value]'="code") {{code | uppercase}}
-                        span('*ngIf'="!!prefix[checkoutForm.controls.paymentSystem.value]") {{prefix[checkoutForm.controls.paymentSystem.value]}}
-                input.form-control(
-                    '[textMask]'="{mask: extraField.mask}"
-                    'type'="walletNumber"
-                    'id'="walletNumber"
-                    'formControlName'="walletNumber"
-                    placeholder=""
-                )
-    .col-12('*ngIf'="checkoutForm.valid")
-        .form-group
-            button.btn.btn-success.btn-block('type'="submit") Get cash
+.card
+    header.card-header
+        h5.card-title.mb-0.d-flex.justify-content-between
+            span Checkout
+            span ({{sum | currency: 'USD'}})
+    form.card-body.pb-0(
+        '*ngIf'="!!paymentSystems.length"
+        '[formGroup]'="checkoutForm"
+    )
+        .row
+            .col-12
+                .form-group.d-flex.flex-wrap
+                    label.w-100 Payment System:
+                    .payment-system-wrapper.p-1(
+                            '*ngFor'="let ps of paymentSystems"
+                            'style'="width: 33.333333%"
+                        )
+                        input.payment-system-checkbox.d-none(
+                            'type'="radio"
+                            'formControlName'="paymentSystem"
+                            'value'="{{ps.tag}}"
+                            'id'="ps-{{ps.tag}}"
+                            '(change)'="setExtraField()"
+                        )
+                        label.payment-system-label.btn.btn-link.w-100.mb-0.py-2.px-1(
+                            'for'="ps-{{ps.tag}}"
+                            '[class.disabled]'="!sum"
+                        ) {{ ps.name }}
+            .col-12('*ngIf'="checkoutForm.controls.paymentSystem.value !== ''")
+                .form-group
+                    label( 'for'="email" ) Email:
+                    input.form-control( 'type'="email" 'id'="email" 'formControlName'="email" placeholder="example@email.com" )
+            .col-12('*ngIf'="!!checkoutForm.get('walletNumber') && checkoutForm.controls.paymentSystem.value !== ''")
+                .form-group
+                    label( 'for'="walletNumber" ) {{extraField.title}}:
+                    .input-group
+                        .input-group-prepend('*ngIf'="!!prefix[checkoutForm.controls.paymentSystem.value] || !!prependField[checkoutForm.controls.paymentSystem.value]")
+                            .input-group-text.p-0(
+                                [class.p-0]="!!prependField[checkoutForm.controls.paymentSystem.value]"
+                            )
+                                select.form-control.border-0('*ngIf'="!!prependField[checkoutForm.controls.paymentSystem.value]")
+                                    option('*ngFor'="let code of prependField[checkoutForm.controls.paymentSystem.value]" '[value]'="code") {{code | uppercase}}
+                                span('*ngIf'="!!prefix[checkoutForm.controls.paymentSystem.value]") {{prefix[checkoutForm.controls.paymentSystem.value]}}
+                        input.form-control(
+                            '[textMask]'="{mask: extraField.mask}"
+                            'type'="walletNumber"
+                            'id'="walletNumber"
+                            'formControlName'="walletNumber"
+                            placeholder=""
+                        )
+            .col-12('*ngIf'="checkoutForm.valid")
+                .form-group
+                    button.btn.btn-success.btn-block('type'="submit") Get cash
+    

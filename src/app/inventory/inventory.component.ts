@@ -21,6 +21,7 @@ export class InventoryComponent implements OnInit {
       itemsPerPage: 36,
       total: 1,
     },
+    loading: true,
   };
   user;
   currentItem;
@@ -49,6 +50,23 @@ export class InventoryComponent implements OnInit {
               private formBuilder: FormBuilder,
               private sanitization: DomSanitizer) {
     this.user = this.userService.getUser();
+    this.createSortingForm();
+    this.refreshInventory();
+    this.userService.user.subscribe((user) => {
+      this.user = user;
+    });
+  }
+
+  ngOnInit() {}
+
+  sanitizeStyle(url): SafeStyle {
+    return this.sanitization.bypassSecurityTrustStyle(`url(${url})`);
+  }
+  isCurrentPage(page): boolean {
+    return this.currentPage === page;
+  }
+  refreshInventory(): void {
+    this.inventory.loading = true;
     this.activatedRoute.params.subscribe((params) => {
       const game = !!params.game ? params.game : 'dota';
       this.currentPage = game;
@@ -67,32 +85,24 @@ export class InventoryComponent implements OnInit {
             itemsPerPage: this.inventory.pages.itemsPerPage,
             total: Math.ceil(Object.values(inventory).length / this.inventory.pages.itemsPerPage),
           },
-          emptySlots: []
+          emptySlots: [],
+          loading: true,
         };
         this.fillEmptySlots();
         this.selectedItems = [];
         this.types = [];
         this.inventory.full.forEach(item => {
-          const type = item.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim();
-          if ( this.types.indexOf(type) === -1 ) {
-            this.types.push(type);
+          if ( item.type ) {
+            const type = item.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim();
+            if ( this.types.indexOf(type) === -1 ) {
+              this.types.push(type);
+            }
           }
         });
+        this.filterInventory();
+        this.inventory.loading = false;
       });
     });
-    this.userService.user.subscribe((user) => {
-      this.user = user;
-    });
-    this.createSortingForm();
-  }
-
-  ngOnInit() {}
-
-  sanitizeStyle(url): SafeStyle {
-    return this.sanitization.bypassSecurityTrustStyle(`url(${url})`);
-  }
-  isCurrentPage(page): boolean {
-    return this.currentPage === page;
   }
 
   selectItem(item): void {

@@ -1,97 +1,108 @@
 
 <div class="container">
-  <div class="row">
-    <div class="col-12">
-      <ul class="nav nav-pills nav-justified my-4">
-        <li class="nav-item" *ngFor="let route of routes"><a class="nav-link" [class.active]="isCurrentPage(route.link)" [routerLink]="['/inventory/' + route.link]">{{route.name | uppercase}}</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="row">
+  <div class="row py-4">
     <div class="col-12 col-lg-6">
-      <form class="form-row" [formGroup]="sortingForm" *ngIf="!!sortingForm">
-        <div class="col-auto">
-          <label class="mr-sm-2" for="search">Search</label>
-          <input class="form-control mb-2 mr-sm-2" id="search" type="search" placeholder="search" formControlName="search" (keyup)="filterInventory()"/>
-        </div>
-        <div class="col-auto">
-          <label for="type">Type</label>
-          <select class="form-control mb-2 mr-sm-2" id="type" formControlName="type" (change)="filterInventory()">
-            <option value="all">ALL</option>
-            <option *ngFor="let type of types" value="{{type}}">{{ type | uppercase }}</option>
-          </select>
-        </div>
-        <div class="col-auto">
-          <label for="sorting">Sorting</label>
-          <select class="form-control mb-2 mr-sm-2" id="sorting" formControlName="sorting" (change)="sortInventory()">
-            <option value="n">Default</option>
-            <option value="price-asc">Price (low to high)</option>
-            <option value="price-desc">Price (high to low)</option>
-            <option value="name-asc">Name (A to Z)</option>
-            <option value="name-desc">Name (Z to A)</option>
-          </select>
-        </div>
-        <div class="col-auto d-flex justify-content-center align-items-end">
-          <label class="btn" for="select-all" [class.btn-success]="inventory.filtered.length === selectedItems.length" [class.btn-secondary]="inventory.filtered.length !== selectedItems.length">Select all</label>
-          <input class="d-none" id="select-all" type="checkbox" formControlName="selectAll" (change)="selectAll()"/>
-        </div>
-      </form>
-    </div>
-    <div class="col-12 col-lg-3">
-      <div class="d-flex flex-column justify-content-end h-100">
-        <h5>Selected items</h5>
-      </div>
-    </div>
-    <div class="col-12 col-lg-3">
-      <div class="d-flex flex-column justify-content-end h-100">
-        <h5>Checkout</h5>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12 col-lg-6">
-      <div class="d-flex flex-wrap mb-2">
-        <div class="item-wrapper" *ngFor="let item of inventory.filtered.slice( (inventory.pages.current-1)*inventory.pages.itemsPerPage, inventory.pages.current*inventory.pages.itemsPerPage )">
-          <button class="btn btn-link d-block item" [class.selected]="isItemSelected(item)" (click)="toggleItemInTrade(item)" style="background-size: cover;" [style.background-image]="sanitizeStyle(item.image)" [disabled]="!item.tradable || !item.price">
-            <div class="item-content">
-              <p class="mb-0 price">{{item.price / 100 | currency: 'USD'}}</p>
-            </div>
-            <div class="hover-content">
-              <h6 class="mb-0 small">{{item.name}}</h6>
-            </div>
-          </button>
-        </div>
-        <div class="item-wrapper" *ngIf="inventory.pages.current === inventory.pages.total">
-          <div class="btn btn-link disabled item">
-            <div class="item-content">
-              <h6 class="mb-0 px-1 small">Not tradable items</h6>
-              <h6 class="mb-0 small">{{inventory.notTradable}}</h6>
-            </div>
-          </div>
-        </div>
-        <div class="item-wrapper" *ngFor="let key of inventory.emptySlots">
-          <div class="btn btn-link disabled item">
-            <div class="item-content"></div>
-          </div>
-        </div>
-      </div>
-      <div class="d-flex">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item">
-              <button class="page-link" type="button" aria-label="Previous" (click)="prevPage()"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></button>
-            </li>
-            <li class="page-item">
-              <button class="page-link disabled">{{inventory.pages.current}} / {{inventory.pages.total}}</button>
-            </li>
-            <li class="page-item">
-              <button class="page-link" type="button" aria-label="Next" (click)="nextPage()"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></button>
-            </li>
+      <div class="card">
+        <header class="card-header">
+          <ul class="nav nav-pills nav-justified mb-4 bg-light rounded">
+            <li class="nav-item" *ngFor="let route of routes"><a class="nav-link" [class.active]="isCurrentPage(route.link)" [routerLink]="['/inventory/' + route.link]">{{route.name | uppercase}}</a></li>
           </ul>
-        </nav>
+          <form class="form-row" [formGroup]="sortingForm" *ngIf="!!sortingForm">
+            <div class="col-auto">
+              <label class="mr-sm-2" for="search">Search</label>
+              <input class="form-control mb-2 mr-sm-2" id="search" type="search" placeholder="search" formControlName="search" (keyup)="filterInventory()"/>
+            </div>
+            <div class="col-auto">
+              <label for="type">Type</label>
+              <select class="form-control mb-2 mr-sm-2" id="type" formControlName="type" (change)="filterInventory()">
+                <option value="all">ALL</option>
+                <option *ngFor="let type of types" value="{{type}}">{{ type | uppercase }}</option>
+              </select>
+            </div>
+            <div class="col-auto">
+              <label for="sorting">Sorting</label>
+              <select class="form-control mb-2 mr-sm-2" id="sorting" formControlName="sorting" (change)="sortInventory()">
+                <option value="n">Default</option>
+                <option value="price-asc">Price (low to high)</option>
+                <option value="price-desc">Price (high to low)</option>
+                <option value="name-asc">Name (A to Z)</option>
+                <option value="name-desc">Name (Z to A)</option>
+              </select>
+            </div>
+            <div class="col-auto d-flex justify-content-center align-items-end">
+              <label class="btn" for="select-all" [class.btn-success]="inventory.filtered.length === selectedItems.length" [class.btn-secondary]="inventory.filtered.length !== selectedItems.length">All</label>
+              <input class="d-none" id="select-all" type="checkbox" formControlName="selectAll" (change)="selectAll()"/>
+            </div>
+          </form>
+        </header>
+        <div class="card-body p-0">
+          <div class="inventory d-flex flex-wrap" [class.loading]="inventory.loading">
+            <div class="item-wrapper" *ngFor="let item of inventory.filtered.slice( (inventory.pages.current-1)*inventory.pages.itemsPerPage, inventory.pages.current*inventory.pages.itemsPerPage )">
+              <button class="btn btn-link d-block item" [class.selected]="isItemSelected(item)" (click)="toggleItemInTrade(item)" style="background-size: cover;" [style.background-image]="sanitizeStyle(item.image)" [disabled]="!item.tradable || !item.price">
+                <div class="item-content">
+                  <p class="mb-0 price">{{item.price / 100 | currency: 'USD'}}</p>
+                </div>
+                <div class="hover-content">
+                  <h6 class="mb-0 small">{{item.name}}</h6>
+                </div>
+              </button>
+            </div>
+            <div class="item-wrapper" *ngIf="inventory.pages.current === inventory.pages.total">
+              <div class="btn btn-link disabled item">
+                <div class="item-content">
+                  <h6 class="mb-0 px-1 small">Not tradable items</h6>
+                  <h6 class="mb-0 small">{{inventory.notTradable}}</h6>
+                </div>
+              </div>
+            </div>
+            <div class="item-wrapper" *ngFor="let key of inventory.emptySlots">
+              <div class="btn btn-link disabled item">
+                <div class="item-content"></div>
+              </div>
+            </div>
+          </div>
+          <div class="w-100 d-flex justify-content-between p-2">
+            <button class="btn btn-outline-info" type="button" (click)="refreshInventory()"><i class="fas fa-sync-alt mr-2"></i>Refresh inventory</button>
+            <nav aria-label="Page navigation example">
+              <ul class="pagination m-0">
+                <li class="page-item active">
+                  <button class="active page-link" type="button" aria-label="Previous" (click)="prevPage()"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></button>
+                </li>
+                <li class="page-item">
+                  <button class="page-link disabled">{{inventory.pages.current}} / {{inventory.pages.total}}</button>
+                </li>
+                <li class="page-item active">
+                  <button class="active page-link" type="button" aria-label="Next" (click)="nextPage()"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
       </div>
     </div>
     <div class="col-12 col-lg-3">
+      <div class="card">
+        <header class="card-header">
+          <h5 class="card-title mb-0">Selected items</h5>
+        </header>
+        <div class="card-body p-0">
+          <div class="selected-items d-flex flex-wrap" *ngIf="!!selectedItems.length">
+            <div class="item-wrapper" *ngFor="let item of selectedItems">
+              <button class="btn btn-link d-block item" (click)="toggleItemInTrade(item)" style="background-size: cover;" [style.background-image]="sanitizeStyle(item.image)">
+                <div class="item-content">
+                  <p class="mb-0 price">{{item.price / 100 | currency: 'USD'}}</p>
+                </div>
+                <div class="hover-content">
+                  <h6 class="mb-0 small">{{item.name}}</h6>
+                </div>
+              </button>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap" *ngIf="!selectedItems.length">
+            <p class="text-muted px-3 py-2 m-0">No items selected</p>
+          </div>
+        </div>
+      </div>
       <div class="card mb-4" *ngIf="!!currentItem"><img class="card-img-top" [src]="currentItem.image" [alt]="currentItem.name"/>
         <div class="card-body">
           <h5 class="card-title" [innerHTML]="currentItem.marketHashName"></h5>
@@ -108,14 +119,9 @@
           <button class="btn btn-primary" [class.btn-primary]="!isItemSelected(currentItem)" [class.btn-danger]="isItemSelected(currentItem)" (click)="toggleItemInTrade(currentItem)" [innerHTML]="isItemSelected(currentItem) ? 'Remove from trade' : 'Add to trade'"></button>
         </div>
       </div>
-      <div class="card mb-4" *ngIf="!!selectedItems.length">
-        <div class="d-flex flex-wrap">
-          <button class="btn btn-link p-0" *ngFor="let item of selectedItems" (click)="toggleItemInTrade(item)" style="width: 33.333333%"><img class="card-img-top" [src]="item.image" [alt]="item.name"/></button>
-        </div>
-      </div>
     </div>
-    <div class="col-12 col-lg-3"> 
-      <app-checkout [sum]="totalCash()"></app-checkout>{{totalCash() | currency: 'USD'}}
+    <div class="col-12 col-lg-3">
+      <app-checkout [sum]="totalCash()"></app-checkout>
     </div>
   </div>
 </div>

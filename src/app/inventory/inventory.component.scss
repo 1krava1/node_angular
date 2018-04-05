@@ -1,6 +1,25 @@
+.inventory{
+    position: relative;
+    &.loading:before{
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .5);
+    }
+    .item-wrapper{
+        width: 16.6666667%;
+    }
+}
+.selected-items{
+    .item-wrapper{
+        width: 33.3333333%;
+    }
+}
 .item-wrapper{
     position: relative;
-    width: 16.6666667%;
 }
 .item{
     position: relative;
