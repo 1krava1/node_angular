@@ -4,9 +4,16 @@
     <div class="col-12 col-lg-6">
       <div class="card">
         <header class="card-header">
-          <ul class="nav nav-pills nav-justified mb-4 bg-light rounded">
-            <li class="nav-item" *ngFor="let route of routes"><a class="nav-link" [class.active]="isCurrentPage(route.link)" [routerLink]="['/inventory/' + route.link]">{{route.name | uppercase}}</a></li>
-          </ul>
+          <div class="row">
+            <div class="col-3">
+              <h5 class="card-title my-2">Inventory:</h5>
+            </div>
+            <div class="col-9">
+              <ul class="nav nav-pills nav-justified mb-4 bg-light rounded">
+                <li class="nav-item" *ngFor="let route of routes"><a class="nav-link" [class.active]="isCurrentPage(route.link)" [routerLink]="['/inventory/' + route.link]">{{route.name | uppercase}}</a></li>
+              </ul>
+            </div>
+          </div>
           <form class="form-row" [formGroup]="sortingForm" *ngIf="!!sortingForm">
             <div class="col-auto">
               <label class="mr-sm-2" for="search">Search</label>
@@ -62,7 +69,7 @@
             </div>
           </div>
           <div class="w-100 d-flex justify-content-between p-2">
-            <button class="btn btn-outline-info" type="button" (click)="refreshInventory()"><i class="fas fa-sync-alt mr-2"></i>Refresh inventory</button>
+            <button class="btn btn-outline-info" type="button" (click)="refreshInventory(1)"><i class="fas fa-sync-alt mr-2"></i>Refresh inventory</button>
             <nav aria-label="Page navigation example">
               <ul class="pagination m-0">
                 <li class="page-item active">

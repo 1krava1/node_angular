@@ -1,13 +1,27 @@
 .inventory{
     position: relative;
-    &.loading:before{
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, .5);
+    &.loading{
+        &:before{
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            z-index: 1;
+        }
+        &:after{
+            content: '\f2f1';
+            font-family: 'Font Awesome 5 Free';
+            color: #ffffff;
+            position: absolute;
+            font-size: 2em;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
     }
     .item-wrapper{
         width: 16.6666667%;

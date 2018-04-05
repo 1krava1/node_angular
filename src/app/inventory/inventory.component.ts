@@ -65,12 +65,13 @@ export class InventoryComponent implements OnInit {
   isCurrentPage(page): boolean {
     return this.currentPage === page;
   }
-  refreshInventory(): void {
+  refreshInventory(refresh?): void {
     this.inventory.loading = true;
+    refresh = !!refresh ? 1 : 0;
     this.activatedRoute.params.subscribe((params) => {
       const game = !!params.game ? params.game : 'dota';
       this.currentPage = game;
-      this.inventoryService.getInventory(this.user.steamID, game).subscribe((inventory) => {
+      this.inventoryService.getInventory(this.user.steamID, game, refresh).subscribe((inventory) => {
         let notTradable = 0;
         inventory = Object.values(inventory).filter((item) => {
           if ( !(item.tradable && item.price > 0) ) { notTradable = notTradable + 1; }
@@ -130,9 +131,14 @@ export class InventoryComponent implements OnInit {
   filterInventory(): void {
     this.inventory.filtered = this.inventory.full.filter((item, index, array) => {
       const search = this.sortingForm.get('search').value.toLowerCase().trim();
-      const type = item.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim();
-      return (this.sortingForm.get('type').value === 'all' || this.sortingForm.get('type').value === type) &&
-             (this.sortingForm.get('search').value.length === 0 || item.name.toLowerCase().includes(search) );
+      if ( !!item.type ) {
+        const type = item.type.toLowerCase().replace('csgo', '').replace('type', '').replace('_', ' ').replace('_', ' ').trim();
+        return (this.sortingForm.get('type').value === 'all' || this.sortingForm.get('type').value === type) &&
+               (this.sortingForm.get('search').value.length === 0 || item.name.toLowerCase().includes(search) );
+      } else {
+        return (this.sortingForm.get('type').value === 'all') &&
+               (this.sortingForm.get('search').value.length === 0 || item.name.toLowerCase().includes(search) );
+      }
     });
     this.sortInventory();
   }

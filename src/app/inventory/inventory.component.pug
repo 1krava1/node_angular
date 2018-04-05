@@ -3,12 +3,16 @@
     .col-12.col-lg-6
       .card
         header.card-header
-          ul.nav.nav-pills.nav-justified.mb-4.bg-light.rounded
-            li.nav-item( '*ngFor'="let route of routes" )
-              a.nav-link(
-                '[class.active]'="isCurrentPage(route.link)"
-                '[routerLink]'="['/inventory/' + route.link]"
-              ) {{route.name | uppercase}}
+          .row
+            .col-3
+              h5.card-title.my-2 Inventory:
+            .col-9
+              ul.nav.nav-pills.nav-justified.mb-4.bg-light.rounded
+                li.nav-item( '*ngFor'="let route of routes" )
+                  a.nav-link(
+                    '[class.active]'="isCurrentPage(route.link)"
+                    '[routerLink]'="['/inventory/' + route.link]"
+                  ) {{route.name | uppercase}}
           form.form-row('[formGroup]'="sortingForm" '*ngIf'="!!sortingForm")
             .col-auto
               label.mr-sm-2('for'="search") Search
@@ -74,7 +78,7 @@
           .w-100.d-flex.justify-content-between.p-2
             button(
               'type'="button"
-              '(click)'="refreshInventory()"
+              '(click)'="refreshInventory(1)"
             ).btn.btn-outline-info
               i.fas.fa-sync-alt.mr-2
               | Refresh inventory

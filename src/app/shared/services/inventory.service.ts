@@ -11,7 +11,7 @@ export class InventoryService {
 
   constructor(private http: HttpClient) {}
 
-  getInventory(steamid, game) {
-    return this.http.get( environment.backend + '/inventory/' + steamid + '/' + game );
+  getInventory(steamid, game, refresh) {
+    return this.http.get( environment.backend + '/inventory/' + steamid + '/' + game + '/' + refresh );
   }
 }
