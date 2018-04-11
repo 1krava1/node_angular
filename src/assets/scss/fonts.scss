@@ -1,0 +1,21 @@
+/* cyrillic */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Roboto Light'), local('Roboto-Light'), url('./assets/webfonts/roboto/Roboto-Light.ttf') format('woff2');
+}
+/* cyrillic */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Roboto'), local('Roboto-Regular'), url('./assets/webfonts/roboto/Roboto-Regular.ttf') format('woff2');
+}
+/* latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Roboto Bold'), local('Roboto-Bold'), url('./assets/webfonts/roboto/Roboto-Bold.ttf') format('woff2');
+}

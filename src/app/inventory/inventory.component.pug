@@ -64,7 +64,7 @@
                 .hover-content
                   h6.mb-0.small {{item.name}}
             .item-wrapper(
-              '*ngIf'="inventory.pages.current === inventory.pages.total"
+              '*ngIf'="inventory.pages.current === inventory.pages.total && inventory.filtered.length !== 0"
             )
               .btn.btn-link.disabled.item
                 .item-content

@@ -1,0 +1,28 @@
+nav.navbar.navbar-expand-lg.navbar-light.bg-light.justify-content-between
+    .container
+        a.navbar-brand.mr-5( '[routerLink]'="['/']" ) Wat
+        button.navbar-toggler(
+            'type'="button"
+            'data-toggle'="collapse"
+            '(click)'="isNavbarCollapsed = !isNavbarCollapsed"
+            'data-target'="#navbarSupportedContent"
+            'aria-controls'="navbarSupportedContent"
+            'aria-expanded'="false"
+            'aria-label'="Toggle navigation"
+        )
+            span.navbar-toggler-icon
+  
+        div#navbarSupportedContent.collapse.navbar-collapse.d-lg-flex.justify-content-lg-end.ml-0.ml-lg-4('[ngbCollapse]'="isNavbarCollapsed")
+            ul.navbar-nav
+                li.nav-item
+                    a.nav-link('[routerLink]'="['/']") How it works
+                li.nav-item
+                    a.nav-link('[routerLink]'="['/']") Bonus
+                li.nav-item
+                    a.nav-link('[routerLink]'="['/faq']") FAQ
+                li.nav-item
+                    a.nav-link('[routerLink]'="['/']") Contact Us
+                li.nav-item
+                    a.nav-link('[routerLink]'="['/']") Giveaway
+                li.nav-item
+                    a.nav-link('[routerLink]'="['/']") Partnership

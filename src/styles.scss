@@ -1,6 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
 @import './assets/scss/bootstrap/bootstrap';
+@import './assets/scss/fontawesome/fontawesome.scss';
+@import './assets/scss/fontawesome/fa-solid.scss';
+@import './assets/scss/fontawesome/fa-brands.scss';
+@import './assets/scss/fonts.scss';
+@import './assets/scss/faq.scss';
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+p,
+body{
+    font-family: 'Roboto', sans-serif;
+}
 .container {
     @media screen and (min-width: 1360px) {
         max-width: (1300px);

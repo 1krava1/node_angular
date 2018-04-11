@@ -20,7 +20,7 @@
                             li.list-group-item.border-left-0.border-right-0 user.deals
                             li.list-group-item.border-left-0.border-right-0 user.cashout
                             li.list-group-item.border-left-0.border-right-0.border-bottom-0 user.balance
-                .card
+                .card.mb-3
                     header.card-header
                         h5.card-title.mb-0 Name bonus
                     .card-body
@@ -61,8 +61,10 @@
                     .card-body
                         .row
                             .col-12.col-md-6.col-lg-2
-                                img.card-img('src'="http://via.placeholder.com/128x128")
-                                | rank.current.name (+1%)
+                                img.card-img.mb-2('src'="http://via.placeholder.com/160x64")
+                                p.mb-0.text-center rank.current.name
+                                p.mb-0.text-center.text-warning
+                                    b (+1%)
                             .col-12.col-md-6.col-lg-8
                                 .d-flex.flex-column.justify-content-center.h-100
                                     p.text-center.mb-1 $1 / $25 (Rank 2)
@@ -75,15 +77,17 @@
                                             aria-valuemax="25"
                                         )
                             .col-12.col-md-6.col-lg-2
-                                img.card-img('src'="http://via.placeholder.com/128x128")
-                                | rank.next.name (+2%)
+                                img.card-img.mb-2('src'="http://via.placeholder.com/160x64")
+                                p.mb-0.text-center rank.next.name
+                                p.mb-0.text-center.text-warning
+                                    b (+2%)
                 .card.mb-3
                     header.card-header
                         h5.card-title.mb-0 Your affiliate status
                     .card-body
                         .row
                             .col-12.col-md-6.col-lg-2
-                                img.card-img('src'="http://via.placeholder.com/128x128")
+                                img.card-img.mb-2('src'="http://via.placeholder.com/128x88")
                                 | Level 1
 
                             .col-12.col-md-6.col-lg-3
@@ -105,7 +109,7 @@
                                             aria-valuemax="5"
                                         )
                             .col-12.col-md-6.col-lg-2
-                                img.card-img('src'="http://via.placeholder.com/128x128")
+                                img.card-img.mb-2('src'="http://via.placeholder.com/128x88")
                                 | Level 2
             .col-12
                 .card.mb-3

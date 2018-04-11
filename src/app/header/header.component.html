@@ -1,55 +1,23 @@
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-  <div class="container">
-    <a class="navbar-brand" [routerLink]="['/']">Wat</a>
-    <button class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            (click)="isNavbarCollapsed = !isNavbarCollapsed"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-  
-    <div [ngbCollapse]="isNavbarCollapsed"
-         class="collapse navbar-collapse d-lg-flex justify-content-lg-between ml-0 ml-lg-4"
-          id="navbarSupportedContent">
+  <div class="container"><a class="navbar-brand mr-5" [routerLink]="['/']">Wat</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" (click)="isNavbarCollapsed = !isNavbarCollapsed" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse d-lg-flex justify-content-lg-between ml-0 ml-lg-4" id="navbarSupportedContent" [ngbCollapse]="isNavbarCollapsed">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/']">How it works</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/']">Bonus</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/faq']">FAQ</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/']">Contact Us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/']">Giveaway</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/']">Partnership</a>
-        </li>
+        <li class="nav-item"><a class="nav-link" [routerLink]="['/']">How it works</a></li>
+        <li class="nav-item"><a class="nav-link" [routerLink]="['/']">Bonus</a></li>
+        <li class="nav-item"><a class="nav-link" [routerLink]="['/faq']">FAQ</a></li>
+        <li class="nav-item"><a class="nav-link" [routerLink]="['/']">Contact Us</a></li>
+        <li class="nav-item"><a class="nav-link" [routerLink]="['/']">Giveaway</a></li>
+        <li class="nav-item"><a class="nav-link" [routerLink]="['/']">Partnership</a></li>
       </ul>
       <ul class="navbar-nav">
         <li class="nav-item" *ngIf="!isLoggedIn();">
           <button class="nav-link btn btn-link" (click)="doLogin()">Sign In</button>
         </li>
-        <li ngbDropdown class="nav-item dropdown" *ngIf="isLoggedIn();">
-          <button class="nav-link btn btn-link" ngbDropdownToggle>
-            <img src="{{user.avatar}}"
-                 alt=""
-                 height="50"
-                 width="50"
-                 class="img-thumbnail rounded-circle">
-            {{user.login}}
-          </button>
-          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-            <a class="dropdown-item" [routerLink]="['/inventory']">Inventory</a>
-            <a class="dropdown-item" [routerLink]="['/account']">Account</a>
+        <li class="nav-item dropdown" ngbDropdown="ngbDropdown" *ngIf="isLoggedIn();">
+          <button class="nav-link btn btn-link" ngbDropdownToggle="ngbDropdownToggle"><img class="img-thumbnail rounded-circle" src="{{user.avatar}}" alt="" height="50" width="50"/>{{user.login}}</button>
+          <div ngbDropdownMenu="ngbDropdownMenu" aria-labelledby="dropdownBasic1"><a class="dropdown-item" [routerLink]="['/inventory']">Inventory</a><a class="dropdown-item" [routerLink]="['/account']">Account</a>
             <button class="dropdown-item" (click)="doLogout()">Logout</button>
           </div>
         </li>

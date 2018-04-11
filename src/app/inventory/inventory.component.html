@@ -54,7 +54,7 @@
                 </div>
               </button>
             </div>
-            <div class="item-wrapper" *ngIf="inventory.pages.current === inventory.pages.total">
+            <div class="item-wrapper" *ngIf="inventory.pages.current === inventory.pages.total &amp;&amp; inventory.filtered.length !== 0">
               <div class="btn btn-link disabled item">
                 <div class="item-content">
                   <h6 class="mb-0 px-1 small">Not tradable items</h6>
